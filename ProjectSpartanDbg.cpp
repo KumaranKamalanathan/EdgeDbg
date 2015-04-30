@@ -46,7 +46,6 @@ HRESULT fGetProcessIdForExecutableName(_TCHAR* sExecutableName, DWORD &dwProcess
           hResult = HRESULT_FROM_WIN32(GetLastError());
         } else do {
           if (_tcscmp(oModuleEntry32.szModule, sExecutableName) == 0) {
-            _tprintf(_T("*** found process id %d\r\n"), oModuleEntry32.th32ProcessID);
             dwProcessId = oModuleEntry32.th32ProcessID;
             bProcessFound = TRUE;
           }
