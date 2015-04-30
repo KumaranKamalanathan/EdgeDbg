@@ -17,7 +17,7 @@ threads in the `spartan.exe` and `browser_broker.exe` processes are resumed.
   C:\path> ProjectSpartanDbg.exe <url> cdb.exe -o -p @spartan_pid@ -c "attach 0n@broker_pid@;~*m;g;~*m;g"
   Project Spartan process id = 2372
   Browser broker process id = 1304
-  Starting cdb.exe -o -p 2372 -c ".attach 0n1304;g"
+  Starting cdb.exe -o -p 2372 -c ".attach 0n1304;~*m;g;~*m;g"
   Microsoft (R) Windows Debugger Version 6.3.9600.16384 X86
   Copyright (c) Microsoft Corporation. All rights reserved.
   
@@ -42,7 +42,7 @@ Notes:
     (`spartan.exe`) and run it. The debugger will then attach to the
     `browser_broker.exe` process and break again.
   * the second `~*m;g` tells cdb to resume all threads in the current process
-    (now `browser_broker.exe`) and run it as well. Project spartan is now
+    (now `browser_broker.exe`) and run it as well. Project Spartan is now
     running in your debugger.
 
     
