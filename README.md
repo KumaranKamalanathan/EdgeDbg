@@ -14,7 +14,7 @@ threads in the `spartan.exe` and `browser_broker.exe` processes are resumed.
 2. Start Project Spartan and attach a debugger, e.g.
   
   ```
-  C:\path> ProjectSpartanDbg.exe <url> cdb.exe -o -p @spartan_pid@ -c "attach 0n@broker_pid@;~*m;g;~*m;g"
+  C:\path> ProjectSpartanDbg.exe <url> cdb.exe -o -p @spartan_pid@ -c ".attach 0n@broker_pid@;~*m;g;~*m;g"
   Project Spartan process id = 2372
   Browser broker process id = 1304
   Starting cdb.exe -o -p 2372 -c ".attach 0n1304;~*m;g;~*m;g"
