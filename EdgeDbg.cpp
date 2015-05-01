@@ -236,7 +236,7 @@ int _tmain(UINT uArgumentsCount, _TCHAR* asArguments[]) {
     _tprintf(_T("Cannot open process\r\n"));
     hResult = E_NOTIMPL;
   } else if (uArgumentsCount < 2) {
-    _tprintf(_T("Usage: ProjectSpartanDbg <url> <debugger command line>\r\n"));
+    _tprintf(_T("Usage: EdgeDbg <url> <debugger command line>\r\n"));
     hResult = E_INVALIDARG;
   } else  {
     hResult = CoInitialize(NULL);
