@@ -79,11 +79,11 @@ HRESULT fSuspendThreadsInProcessById(DWORD dwProcessId) {
       if (oThreadEntry32.th32OwnerProcessID == dwProcessId) {
         HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, oThreadEntry32.th32ThreadID);
         if (!hThread) {
-          _tprintf(_T("Cannot open thread %d of process %d (error %08X)"), oThreadEntry32.th32ThreadID, oThreadEntry32.th32OwnerProcessID, GetLastError());
+          _tprintf(_T("Cannot open thread %d of process %d (error %08X)\r\n"), oThreadEntry32.th32ThreadID, oThreadEntry32.th32OwnerProcessID, GetLastError());
           hResult = HRESULT_FROM_WIN32(GetLastError());
         } else {
           if (SuspendThread(hThread) == -1) {
-            _tprintf(_T("Cannot suspend thread %d of process %d (error %08X)"), oThreadEntry32.th32ThreadID, oThreadEntry32.th32OwnerProcessID, GetLastError());
+            _tprintf(_T("Cannot suspend thread %d of process %d (error %08X)\r\n"), oThreadEntry32.th32ThreadID, oThreadEntry32.th32OwnerProcessID, GetLastError());
             hResult = HRESULT_FROM_WIN32(GetLastError());
           }
           if (!fCloseHandleAndUpdateResult(hThread, hResult)) {
@@ -120,7 +120,7 @@ HRESULT fShowProcessIdsAndSuspendThreadsForExecutableName(_TCHAR* sExecutableNam
           hResult = HRESULT_FROM_WIN32(GetLastError());
         } else do {
           if (_tcscmp(oModuleEntry32.szModule, sExecutableName) == 0) {
-            _tprintf(_T("%s process id = %d"), sExecutableName, oModuleEntry32.th32ProcessID);
+            _tprintf(_T("%s process id = %d\r\n"), sExecutableName, oModuleEntry32.th32ProcessID);
             if (bSuspendThreads) {
               hResult = fSuspendThreadsInProcessById(oModuleEntry32.th32ProcessID);
             }
@@ -170,7 +170,7 @@ HRESULT fRunDebugger(DWORD dwSpartanProcessId, DWORD dwBrowserBrokerProcessId, U
       sCommandLine += sArgument;
     }
   }
-  _tprintf(_T("Starting %s"), sCommandLine.c_str());
+  _tprintf(_T("Starting %s\r\n"), sCommandLine.c_str());
   HRESULT hResult;
   STARTUPINFO oStartupInfo = {};
   oStartupInfo.cb = sizeof(oStartupInfo);
