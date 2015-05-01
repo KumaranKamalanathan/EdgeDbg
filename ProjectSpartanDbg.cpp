@@ -279,7 +279,7 @@ int _tmain(UINT uArgumentsCount, _TCHAR* asArguments[]) {
                   if (SUCCEEDED(hResult)) {
                     _tprintf(_T("spartan.exe process id = %d\r\n"), dwSpartanProcessId);
                     _tprintf(_T("browser_broker.exe process id = %d\r\n"), dwBrowserBrokerProcessId);
-                    BOOL bRunDebugger = uArgumentsCount > 3 || (uArgumentsCount == 3 && _tcscmp(asArguments[2], _T("@")) != 0);
+                    BOOL bRunDebugger = uArgumentsCount > 3 || (uArgumentsCount == 3 && _tcscmp(asArguments[2], _T("--suspend")) != 0);
                     if (bRunDebugger) {
                       hResult = fTerminateProcessesForExecutableName(_T("spartan_edge.exe"));
                     } else {
