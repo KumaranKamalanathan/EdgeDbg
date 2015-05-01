@@ -33,7 +33,7 @@ Download
 If you do not want to build Edge Dbg from source, you can download a pre-build
 executable:
     [EdgeDbg.zip]
-    (https://github.com/SkyLined/EdgeDbg/releases/download/0.5b/EdgeDbg.zip)
+    (https://github.com/SkyLined/EdgeDbg/releases/download/0.5.2/EdgeDbg.zip)
 
 Examples
 --------
