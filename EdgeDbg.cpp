@@ -180,6 +180,7 @@ HRESULT fRunDebugger(DWORD dwSpartanProcessId, DWORD dwBrowserBrokerProcessId, U
   oStartupInfo.hStdError = GetStdHandle(STD_ERROR_HANDLE);
   PROCESS_INFORMATION oProcessInformation = {};
   if (!CreateProcess(NULL, (LPWSTR)sCommandLine.c_str(), NULL, NULL, TRUE, 0, NULL, NULL, &oStartupInfo, &oProcessInformation)) {
+    _tprintf(_T("Cannot start debugger (error %d)\r\n"), GetLastError());
     hResult = HRESULT_FROM_WIN32(GetLastError());
   } else {
     if (WaitForSingleObject( oProcessInformation.hProcess, INFINITE ) != WAIT_OBJECT_0) {
