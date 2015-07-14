@@ -2,7 +2,10 @@
 typedef HRESULT(NTAPI *tNtSuspendProcess)(IN HANDLE);
 tNtSuspendProcess NtSuspendProcess;
 
-const LPCTSTR sSpartanAUMID = _T("Microsoft.Windows.Spartan_cw5n1h2txyewy!Microsoft.Spartan.Spartan");
+const _TCHAR* sAUMID = _T("Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge");
+const _TCHAR* sMainExecutable = _T("MicrosoftEdge.exe");
+const _TCHAR* sBrokerExecutable = _T("browser_broker.exe");
+const _TCHAR* sContentExecutable = _T("MicrosoftEdgeCP.exe");
 
 HRESULT fGetSnapshot(DWORD dwFlags, DWORD dwProcessId, HANDLE &hSnapshot) {
   HRESULT hResult;
@@ -23,7 +26,7 @@ BOOL fCloseHandleAndUpdateResult(HANDLE hHandle, HRESULT &hResult) {
   }
   return TRUE;
 }
-HRESULT fGetProcessIdForExecutableName(_TCHAR* sExecutableName, DWORD &dwProcessId) {
+HRESULT fGetProcessIdForExecutableName(const _TCHAR* sExecutableName, DWORD &dwProcessId) {
   BOOL bProcessFound = FALSE;
   HANDLE hProcessesSnapshot;
   HRESULT hResult = fGetSnapshot(TH32CS_SNAPPROCESS, 0, hProcessesSnapshot);
@@ -89,6 +92,7 @@ HRESULT fSuspendThreadsInProcessById(DWORD dwProcessId) {
           if (!fCloseHandleAndUpdateResult(hThread, hResult)) {
             _tprintf(_T("Cannot close thread %d of process %d\r\n"), oThreadEntry32.th32ThreadID, oThreadEntry32.th32OwnerProcessID);
           }
+          _tprintf(L"// Suspended thread %d.\r\n", oThreadEntry32.th32ThreadID);
         }
       }
     } while (SUCCEEDED(hResult) && Thread32Next(hThreadSnapshot, &oThreadEntry32));
@@ -98,7 +102,7 @@ HRESULT fSuspendThreadsInProcessById(DWORD dwProcessId) {
   }
   return hResult;
 }
-HRESULT fShowProcessIdsAndSuspendThreadsForExecutableName(_TCHAR* sExecutableName, BOOL bSuspendThreads) {
+HRESULT fShowProcessIdsAndSuspendThreadsForExecutableName(const _TCHAR* sExecutableName, BOOL bSuspendThreads) {
   HANDLE hProcessesSnapshot;
   HRESULT hResult = fGetSnapshot(TH32CS_SNAPPROCESS, 0, hProcessesSnapshot);
   if (!SUCCEEDED(hResult)) {
@@ -148,19 +152,19 @@ VOID fReplaceAll(std::basic_string<TCHAR> &sHayStack, std::basic_string<TCHAR> s
     uIndex += sNeedle.length(); 
   }
 }
-HRESULT fRunDebugger(DWORD dwSpartanProcessId, DWORD dwBrowserBrokerProcessId, UINT uCommandLineCount, _TCHAR* asCommandLine[]) {
+HRESULT fRunDebugger(DWORD dwMainProcessId, DWORD dwBrokerProcessId, UINT uCommandLineCount, _TCHAR* asCommandLine[]) {
   std::basic_string<TCHAR> sCommandLine = _T("");
   #ifdef UNICODE
-    std::basic_string<TCHAR> sSpartanProcessId = std::to_wstring(dwSpartanProcessId);
-    std::basic_string<TCHAR> sBrowserBrokerProcessId = std::to_wstring(dwBrowserBrokerProcessId);
+    std::basic_string<TCHAR> sMainProcessId = std::to_wstring(dwMainProcessId);
+    std::basic_string<TCHAR> sBrowserBrokerProcessId = std::to_wstring(dwBrokerProcessId);
   #else
-    std::basic_string<TCHAR> sSpartanProcessId = std::to_string(dwSpartanProcessId);
-    std::basic_string<TCHAR> sBrowserBrokerProcessId = std::to_string(dwBrowserBrokerProcessId);
+    std::basic_string<TCHAR> sMainProcessId = std::to_string(dwMainProcessId);
+    std::basic_string<TCHAR> sBrowserBrokerProcessId = std::to_string(dwBrokerProcessId);
   #endif
   for (UINT uIndex = 0; uIndex < uCommandLineCount; uIndex++) {
     if (uIndex > 0) sCommandLine += _T(" ");
     std::basic_string<TCHAR> sArgument = asCommandLine[uIndex];
-    fReplaceAll(sArgument, _T("@spartan_pid@"), sSpartanProcessId);
+    fReplaceAll(sArgument, _T("@main_pid@"), sMainProcessId);
     fReplaceAll(sArgument, _T("@broker_pid@"), sBrowserBrokerProcessId);
     if (sArgument.find(_T(" ")) != std::basic_string<TCHAR>::npos) { // If the argument contains spaces, quotes are needed
       fReplaceAll(sArgument, _T("\\"), _T("\\\\")); // escape all existing escapes.
@@ -216,7 +220,7 @@ HRESULT fKillProcessById(DWORD dwProcessId) {
   }
   return hResult;
 }
-HRESULT fTerminateProcessesForExecutableName(_TCHAR* sExecutableName) {
+HRESULT fTerminateProcessesForExecutableName(const _TCHAR* sExecutableName) {
   HRESULT hResult;
   DWORD dwProcessId;
   do {
@@ -224,7 +228,7 @@ HRESULT fTerminateProcessesForExecutableName(_TCHAR* sExecutableName) {
     if (SUCCEEDED(hResult) && dwProcessId) {
       hResult = fKillProcessById(dwProcessId);
       if (SUCCEEDED(hResult)) {
-        _tprintf(_T("Terminated %s process %d\r\n"), sExecutableName, dwProcessId);
+        _tprintf(_T("// Terminated %s process %d\r\n"), sExecutableName, dwProcessId);
       }
     }
   } while (SUCCEEDED(hResult) && dwProcessId);
@@ -249,47 +253,51 @@ int _tmain(UINT uArgumentsCount, _TCHAR* asArguments[]) {
       if (!SUCCEEDED(hResult)) {
         _tprintf(_T("Failed to create Application Activation Manager\r\n"));
       } else {
-        hResult = fTerminateProcessesForExecutableName(_T("spartan.exe"));
+        hResult = fTerminateProcessesForExecutableName(sMainExecutable);
         if (SUCCEEDED(hResult)) {
-          hResult = fTerminateProcessesForExecutableName(_T("browser_broker.exe"));
+          hResult = fTerminateProcessesForExecutableName(sBrokerExecutable);
         }
         if (SUCCEEDED(hResult)) {
-          hResult = fTerminateProcessesForExecutableName(_T("spartan_edge.exe"));
+          hResult = fTerminateProcessesForExecutableName(sContentExecutable);
         }
         if (SUCCEEDED(hResult)) {
-          DWORD dwSpartanProcessId;
-          hResult = pAAM->ActivateApplication(sSpartanAUMID, asArguments[1], AO_NONE, &dwSpartanProcessId);
+          DWORD dwMainProcessId;
+          hResult = pAAM->ActivateApplication(sAUMID, asArguments[1], AO_NONE, &dwMainProcessId);
           if (!SUCCEEDED(hResult)) {
-            _tprintf(_T("Failed to launch Project Spartan\r\n"));
+            _tprintf(_T("Failed to launch Microsoft Edge\r\n"));
           } else {
+            _tprintf(_T("%s process id = %d\r\n"), sMainExecutable, dwMainProcessId);
             BOOL bSuspendThreads = uArgumentsCount > 2;
             if (bSuspendThreads) {
-              hResult = fSuspendThreadsInProcessById(dwSpartanProcessId);
+              hResult = fSuspendThreadsInProcessById(dwMainProcessId);
             }
             if (SUCCEEDED(hResult)) {
-              DWORD dwBrowserBrokerProcessId;
-              hResult = fGetProcessIdForExecutableName(_T("browser_broker.exe"), dwBrowserBrokerProcessId);
+              DWORD dwBrokerProcessId;
+              hResult = fGetProcessIdForExecutableName(_T("browser_broker.exe"), dwBrokerProcessId);
               if (SUCCEEDED(hResult)) {
-                if (!dwBrowserBrokerProcessId) {
+                if (!dwBrokerProcessId) {
                   _tprintf(_T("Browser broker process not found!\r\n"));
                   hResult = HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER); // similar to cdb behavior
                 } else {
+                  _tprintf(_T("%s process id = %d\r\n"), sBrokerExecutable, dwBrokerProcessId);
                   if (bSuspendThreads) {
-                    hResult = fSuspendThreadsInProcessById(dwBrowserBrokerProcessId);
+                    hResult = fSuspendThreadsInProcessById(dwBrokerProcessId);
                   }
                   if (SUCCEEDED(hResult)) {
-                    _tprintf(_T("spartan.exe process id = %d\r\n"), dwSpartanProcessId);
-                    _tprintf(_T("browser_broker.exe process id = %d\r\n"), dwBrowserBrokerProcessId);
                     BOOL bRunDebugger = uArgumentsCount > 3 || (uArgumentsCount == 3 && _tcscmp(asArguments[2], _T("--suspend")) != 0);
+                     // The browser process was hopefully suspended before it started any content processes...
                     if (bRunDebugger) {
-                      hResult = fTerminateProcessesForExecutableName(_T("spartan_edge.exe"));
-                    } else {
-                      hResult = fShowProcessIdsAndSuspendThreadsForExecutableName(_T("spartan_edge.exe"), bSuspendThreads);
-                    }
-                    if (SUCCEEDED(hResult)) {
-                      if (bRunDebugger) {
-                        hResult = fRunDebugger(dwSpartanProcessId, dwBrowserBrokerProcessId, uArgumentsCount - 2, asArguments + 2);
+                      // ... but if this is not the case, and a debugger should be started, they will be killed now:
+                      // The browser should recreate them automagically later and debugging can happen as if they were
+                      // never created in the first place.
+                      hResult = fTerminateProcessesForExecutableName(sContentExecutable);
+                      if (SUCCEEDED(hResult)) {
+                        hResult = fRunDebugger(dwMainProcessId, dwBrokerProcessId, uArgumentsCount - 2, asArguments + 2);
                       }
+                    } else if (bSuspendThreads) {
+                      // ... but if this is not the case, and if all threads should be suspended, make sure to include
+                      // those in any content processes.
+                      hResult = fShowProcessIdsAndSuspendThreadsForExecutableName(sContentExecutable, bSuspendThreads);
                     }
                   }
                 }
