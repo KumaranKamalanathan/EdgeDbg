@@ -70,9 +70,9 @@ Parsing output
 --------------
 If you want to use EdgeDbg with your own debugger, but do not want EdgeDbg to
 start it, you can use the --suspend switch and parse the EdgeDbg output to
-determine which processes to attach to: lines starting with "-" indicate a
-fatal error, lines starting with "*" are progress notifications and lines
-starting with "+" contain process ids.
+determine which processes to attach to: lines starting with `-` indicate a
+fatal error, lines starting with `*` are progress notifications and lines
+starting with `+` contain process ids.
 
 Download
 --------
