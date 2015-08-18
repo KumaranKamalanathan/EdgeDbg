@@ -21,6 +21,8 @@ HRESULT fGetSnapshot(DWORD dwFlags, DWORD dwProcessId, HANDLE &hSnapshot) {
   return hResult;
 }
 BOOL fCloseHandleAndUpdateResult(HANDLE hHandle, HRESULT &hResult) {
+  // Close the handle, if this fails and the hResult is not an error, update hResult.
+  // Return TRUE if the handle was successfully closed.
   if (!CloseHandle(hHandle)) {
     if (SUCCEEDED(hResult)) {
       hResult = HRESULT_FROM_WIN32(GetLastError());
@@ -286,7 +288,7 @@ HRESULT fActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sURL
   // Get and suspend the browser broker process
   DWORD dwBrowserBrokerProcessId;
   hResult = fGetProcessIdForExecutableName(sBrowserBrokerExecutable, dwBrowserBrokerProcessId, bProcessFound);
-  if (SUCCEEDED(hResult)) hResult;
+  if (!SUCCEEDED(hResult)) return hResult;
   if (!bProcessFound) {
     _tprintf(_T("%s process not found.\r\n"), sBrowserBrokerExecutable);
     return HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER); // similar to cdb behavior
@@ -302,6 +304,7 @@ HRESULT fActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sURL
       uDebuggerCommandLineComponentsCount, asDebuggerCommandLine
     );
   }
+  return hResult;
 }
 int _tmain(UINT uArgumentsCount, _TCHAR* asArguments[]) {
   HRESULT hResult;
