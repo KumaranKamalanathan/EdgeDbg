@@ -79,7 +79,7 @@ Download
 If you do not want to build EdgeDbg from source, you can download pre-build
 executables:
 
-    [EdgeDbg.zip]
+&nbsp;&nbsp;&nbsp;&nbsp;[EdgeDbg.zip]
     (https://github.com/SkyLined/EdgeDbg/releases/download/1.0/EdgeDbg.zip)
 
 Please note that the 64-bit executable will (obviously) not run on 32-bit
