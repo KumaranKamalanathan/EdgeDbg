@@ -5,9 +5,9 @@ IF "%~1" == "" (
   EXIT /B 0
 )
 IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-  SET EdgeDbg=%~dp0x64\Release\EdgeDbg.exe
+  SET EdgeDbg=%~dp0Build\EdgeDbg_x64.exe
 ) ELSE (
-  SET EdgeDbg=%~dp0Release\EdgeDbg.exe
+  SET EdgeDbg=%~dp0Build\EdgeDbg_x86.exe
 )
 
 ECHO * Terminating any running instancess of Microsoft Edge...
