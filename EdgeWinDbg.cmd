@@ -10,7 +10,7 @@ IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
   SET EdgeDbg=%~dp0Release\EdgeDbg.exe
 )
 
-ECHO * Killing any running instancess of Microsoft Edge...
+ECHO * Terminating any running instancess of Microsoft Edge...
 TASKKILL /F /IM MicrosoftEdge.exe 2>nul >nul
 TASKKILL /F /IM browser_broker.exe 2>nul >nul
 TASKKILL /F /IM RuntimeBroker.exe 2>nul >nul
