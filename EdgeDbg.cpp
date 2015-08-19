@@ -167,6 +167,8 @@ HRESULT fRunDebugger(
     std::basic_string<TCHAR> sRuntimeBrokerProcessId = std::to_string(dwRuntimeBrokerProcessId);
     std::basic_string<TCHAR> sMicrosoftEdgeCPProcessId = std::to_string(dwMicrosoftEdgeCPProcessId);
   #endif
+  std::basic_string<TCHAR> sAllProcessIds = sMicrosoftEdgeProcessId + _T(",") + sBrowserBrokerProcessId + _T(",") + 
+                                            sRuntimeBrokerProcessId + _T(",") + sMicrosoftEdgeCPProcessId;
   for (UINT uIndex = 0; uIndex < uCommandLineCount; uIndex++) {
     if (uIndex > 0) sCommandLine += _T(" ");
     std::basic_string<TCHAR> sArgument = asCommandLine[uIndex];
@@ -174,6 +176,7 @@ HRESULT fRunDebugger(
     fReplaceAll(sArgument, _T("@browser_broker@"), sBrowserBrokerProcessId);
     fReplaceAll(sArgument, _T("@RuntimeBroker@"), sRuntimeBrokerProcessId);
     fReplaceAll(sArgument, _T("@MicrosoftEdgeCP@"), sMicrosoftEdgeCPProcessId);
+    fReplaceAll(sArgument, _T("@ProcessIds@"), sAllProcessIds);
     if (sArgument.find(_T(" ")) != std::basic_string<TCHAR>::npos) { // If the argument contains spaces, quotes are needed
       fReplaceAll(sArgument, _T("\\"), _T("\\\\")); // escape all existing escapes.
       fReplaceAll(sArgument, _T("\""), _T("\\\"")); // escape all quotes
