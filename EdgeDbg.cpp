@@ -49,13 +49,19 @@ HRESULT fGetProcessIdForExecutableName(const _TCHAR* sExecutableName, DWORD &dwP
     HANDLE hModulesSnapshot;
     HRESULT hSnapshotResult = fGetSnapshot(TH32CS_SNAPMODULE, oProcessEntry32.th32ProcessID, hModulesSnapshot);
     if (SUCCEEDED(hSnapshotResult)) {
-      // We have access to the module list, check if it is the requested process.
+      // We seem to have access to the module list, check if we can get the first module.
       MODULEENTRY32 oModuleEntry32;
       oModuleEntry32.dwSize = sizeof(oModuleEntry32);
       if (!Module32First(hModulesSnapshot, &oModuleEntry32)) {
-        _tprintf(_T("- Cannot get first module from snapshot (error %08X).\r\n"), GetLastError());
-        hResult = HRESULT_FROM_WIN32(GetLastError());
-      } else do {
+        if (GetLastError() == ERROR_NO_MORE_FILES) {
+          // No: there may be no modules or module information is not available. This is ignored.
+        } else {
+          _tprintf(_T("- Cannot get first module from snapshot (error %08X).\r\n"), GetLastError());
+          hResult = HRESULT_FROM_WIN32(GetLastError());
+        }
+      }
+      // If we can access the first module, scan the moodule list for the requested executable name.
+      if (SUCCEEDED(hResult)) do {
         if (_tcsicmp(oModuleEntry32.szModule, sExecutableName) == 0) {
           dwProcessId = oModuleEntry32.th32ProcessID;
           bProcessFound = TRUE;
