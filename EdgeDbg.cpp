@@ -173,8 +173,8 @@ HRESULT fRunDebugger(
     std::basic_string<TCHAR> sRuntimeBrokerProcessId = std::to_string(dwRuntimeBrokerProcessId);
     std::basic_string<TCHAR> sMicrosoftEdgeCPProcessId = std::to_string(dwMicrosoftEdgeCPProcessId);
   #endif
-  std::basic_string<TCHAR> sAllProcessIds = sMicrosoftEdgeProcessId + _T(",") + sBrowserBrokerProcessId + _T(",") + 
-                                            sRuntimeBrokerProcessId + _T(",") + sMicrosoftEdgeCPProcessId;
+  std::basic_string<TCHAR> sAllProcessIds = sRuntimeBrokerProcessId + _T(",") + sBrowserBrokerProcessId + 
+                                            sMicrosoftEdgeProcessId + _T(",") + sMicrosoftEdgeCPProcessId + _T(",");
   for (UINT uIndex = 0; uIndex < uCommandLineCount; uIndex++) {
     if (uIndex > 0) sCommandLine += _T(" ");
     std::basic_string<TCHAR> sArgument = asCommandLine[uIndex];
@@ -261,6 +261,7 @@ HRESULT fActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sURL
     UINT uDebuggerCommandLineComponentsCount, _TCHAR** asDebuggerCommandLine) {
   DWORD dwMicrosoftEdgeProcessId;
   _tprintf(_T("* Activating Microsoft Edge application...\r\n"));
+  _tprintf(_T("  URL to open: %s\r\n"), sURL);
   HRESULT hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
   if (!SUCCEEDED(hResult)) {
     _tprintf(_T("- Failed to launch Microsoft Edge (HRESULT %08X, error %08X).\r\n"), hResult, GetLastError());
