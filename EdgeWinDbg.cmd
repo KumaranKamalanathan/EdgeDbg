@@ -1,13 +1,23 @@
 @ECHO OFF
+IF "%~2" == "" (
+  IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+    SET WinDbg="C:\Tools\Debugging Tools for Windows (x64)\windbg.exe"
+  ) ELSE (
+    SET WinDbg="C:\Tools\Debugging Tools for Windows (x86)\windbg.exe"
+  )
+)
 IF "%~1" == "" (
-  ECHO Usage:
-  ECHO   %~n0 path\to\windbg.exe htp://url.to/open [optional windbg arguments]
-  EXIT /B 0
+  SET URL="http://%COMPUTERNAME%:28876/"
+) ELSE IF "%~2" == "" (
+  SET URL=%1
+) ELSE (
+  SET WinDbg=%1
+  SET URL=%2
 )
 IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-  SET EdgeDbg=%~dp0Build\EdgeDbg_x64.exe
+  SET EdgeDbg="%~dp0Build\EdgeDbg_x64.exe"
 ) ELSE (
-  SET EdgeDbg=%~dp0Build\EdgeDbg_x86.exe
+  SET EdgeDbg="%~dp0Build\EdgeDbg_x86.exe"
 )
 
 ECHO * Terminating any running instancess of Microsoft Edge...
@@ -20,6 +30,8 @@ ECHO * Deleting crash recovery data...
 DEL "%LOCALAPPDATA%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\MicrosoftEdge\User\Default\Recovery\Active\*.*" /Q >nul
 
 ECHO * Starting Edge in Windbg...
+ECHO   WinDbg: %WinDbg%
+ECHO   URL: %URL%
 :: 1) Attach to first process through "-p" command line argument
 :: 2) Attach to remaining three processes using ".attach" & "g"
 :: We cannot resume the processes yet, as attaching requires "g", which will cause the processes to run, which may
@@ -29,4 +41,4 @@ ECHO * Starting Edge in Windbg...
 :: 4) And resume first three processes (set current and resume)
 :: 5) Continue the processes ("g")
 :: This way all processes are resumed at the same time.
-"%EdgeDbg%" %2 %1 -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;|0s;~*m;|1s;~*m;|2s;~*m;g" %3 %4 %5 %6 %7 %8 %9
+%EdgeDbg% %URL% %WinDbg% -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;|0s;~*m;|1s;~*m;|2s;~*m;g" %3 %4 %5 %6 %7 %8 %9

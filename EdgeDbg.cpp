@@ -260,8 +260,7 @@ HRESULT fTerminateAllRelevantProcesses() {
 HRESULT fActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sURL, BOOL bSuspendThreads,
     UINT uDebuggerCommandLineComponentsCount, _TCHAR** asDebuggerCommandLine) {
   DWORD dwMicrosoftEdgeProcessId;
-  _tprintf(_T("* Activating Microsoft Edge application...\r\n"));
-  _tprintf(_T("  URL to open: %s\r\n"), sURL);
+  _tprintf(_T("* Activating Microsoft Edge and opening %s...\r\n"), sURL);
   HRESULT hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
   if (!SUCCEEDED(hResult)) {
     _tprintf(_T("- Failed to launch Microsoft Edge (HRESULT %08X, error %08X).\r\n"), hResult, GetLastError());
