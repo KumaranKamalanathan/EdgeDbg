@@ -100,6 +100,8 @@ HRESULT fSuspendThreadsInProcessById(DWORD dwProcessId) {
     hResult = _NtSuspendProcess(hProcess);
     if (!SUCCEEDED(hResult)) {
       _tprintf(_T("- Cannot suspend process %d (HRESULT %08X, error %08X).\r\n"), dwProcessId, hResult, GetLastError());
+    } else {
+      _tprintf(_T("* Suspended process %d.\r\n"), dwProcessId);
     }
     if (!fCloseHandleAndUpdateResult(hProcess, hResult)) {
       _tprintf(_T("- Cannot close process %d (error %d).\r\n"), dwProcessId, GetLastError());
@@ -173,8 +175,8 @@ HRESULT fRunDebugger(
     std::basic_string<TCHAR> sRuntimeBrokerProcessId = std::to_string(dwRuntimeBrokerProcessId);
     std::basic_string<TCHAR> sMicrosoftEdgeCPProcessId = std::to_string(dwMicrosoftEdgeCPProcessId);
   #endif
-  std::basic_string<TCHAR> sAllProcessIds = sRuntimeBrokerProcessId + _T(",") + sBrowserBrokerProcessId + 
-                                            sMicrosoftEdgeProcessId + _T(",") + sMicrosoftEdgeCPProcessId + _T(",");
+  std::basic_string<TCHAR> sAllProcessIds = sRuntimeBrokerProcessId + _T(",") + sBrowserBrokerProcessId +  _T(",") +
+                                            sMicrosoftEdgeProcessId + _T(",") + sMicrosoftEdgeCPProcessId;
   for (UINT uIndex = 0; uIndex < uCommandLineCount; uIndex++) {
     if (uIndex > 0) sCommandLine += _T(" ");
     std::basic_string<TCHAR> sArgument = asCommandLine[uIndex];
@@ -262,6 +264,10 @@ HRESULT fActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sURL
   DWORD dwMicrosoftEdgeProcessId;
   _tprintf(_T("* Activating Microsoft Edge and opening %s...\r\n"), sURL);
   HRESULT hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
+  if (hResult == 0x800706BE) {
+    // The remote procedure call failed; try again.
+    hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
+  }
   if (!SUCCEEDED(hResult)) {
     _tprintf(_T("- Failed to launch Microsoft Edge (HRESULT %08X, error %08X).\r\n"), hResult, GetLastError());
     return hResult;

@@ -37,8 +37,8 @@ ECHO   URL: %URL%
 :: We cannot resume the processes yet, as attaching requires "g", which will cause the processes to run, which may
 :: trigger an exception in one of the processes, which will then interfere with the remaining commands we are going to
 :: execute and everything will be one big mess.
-:: 3) Resume threads in current process (last attached process)
-:: 4) And resume first three processes (set current and resume)
+:: 3) Resume threads in current process (last attached process) and enable child debugging
+:: 4) And resume first three processes (set current and resume) and enable child debugging
 :: 5) Continue the processes ("g")
-:: This way all processes are resumed at the same time.
-%EdgeDbg% %URL% %WinDbg% -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;|0s;~*m;|1s;~*m;|2s;~*m;g" %3 %4 %5 %6 %7 %8 %9
+:: This way all processes are resumed at the same time and all child processes are debugged.
+%EdgeDbg% %URL% %WinDbg% -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g" %3 %4 %5 %6 %7 %8 %9
