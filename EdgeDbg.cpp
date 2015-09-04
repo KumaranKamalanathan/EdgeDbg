@@ -264,13 +264,13 @@ HRESULT fActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sURL
   DWORD dwMicrosoftEdgeProcessId;
   _tprintf(_T("* Activating Microsoft Edge and opening %s...\r\n"), sURL);
   HRESULT hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
-  if (hResult == 0x800706BE) {
-    // The remote procedure call failed; try again.
-    hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
-  }
   if (!SUCCEEDED(hResult)) {
-    _tprintf(_T("- Failed to launch Microsoft Edge (HRESULT %08X, error %08X).\r\n"), hResult, GetLastError());
-    return hResult;
+    // I've seen a number of errors that appear to be temporary; trying again will work.
+    hResult = pAAM->ActivateApplication(sAUMID, sURL, AO_NONE, &dwMicrosoftEdgeProcessId);
+    if (!SUCCEEDED(hResult)) {
+      _tprintf(_T("- Failed to launch Microsoft Edge (HRESULT %08X, error %08X).\r\n"), hResult, GetLastError());
+      return hResult;
+    }
   }
   _tprintf(_T("+ %s process id = %d\r\n"), sMicrosoftEdgeExecutable, dwMicrosoftEdgeProcessId);
   // Wait for the MicrosoftEdgeCP.exe process to be launched, which happens last.
