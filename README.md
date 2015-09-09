@@ -82,10 +82,18 @@ starting with `+` contain process ids.
 Download
 --------
 If you do not want to build EdgeDbg from source, you can download pre-build
-executables:
+executables for the latest release:
 
 &nbsp;&nbsp;&nbsp;&nbsp;[EdgeDbg.zip]
     (https://github.com/SkyLined/EdgeDbg/releases/download/1.1b/EdgeDbg.zip)
+
+You can also download the most up-to-date pre-build executables, including
+.pdb files for debugging, from the [repository]
+(https://github.com/SkyLined/EdgeDbg/tree/master/Build) itself. Please note
+that these later binaries may have newer features, but are also more likely
+to have bugs in them.
+I'd advise you to use the release executables unless they do not work for
+you for some reason.
 
 Please note that the 64-bit executable will (obviously) not run on 32-bit
 windows builds, and that the 32-bit executable will not work on 64-bit windows
