@@ -1,24 +1,24 @@
 @ECHO OFF
-IF "%WinDbg%" == "" (
+IF "%WinDbg:"=%" == "" (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET WinDbg=C:\Program Files\Windows Kits\8.1\Debuggers\x64\windbg.exe
   ) ELSE (
     SET WinDbg=C:\Program Files\Windows Kits\8.1\Debuggers\x86\windbg.exe
   )
 )
-IF NOT EXIST "%WinDbg%" (
+IF NOT EXIST "%WinDbg:"=%" (
   ECHO - Cannot find WinDbg at %WinDbg%
   EXIT /B 1
 )
 
-IF "%EdgeDbg%" == "" (
+IF "%EdgeDbg:"=%" == "" (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET EdgeDbg=%~dp0Build\EdgeDbg_x64.exe
   ) ELSE (
     SET EdgeDbg=%~dp0Build\EdgeDbg_x86.exe
   )
 )
-IF NOT EXIST "%EdgeDbg%" (
+IF NOT EXIST "%EdgeDbg:"=%" (
   ECHO - Cannot find EdgeDbg at %EdgeDbg%
   EXIT /B 1
 )
@@ -50,4 +50,4 @@ ECHO + URL: %URL%
 :: 4) And resume first three processes (set current and resume) and enable child debugging
 :: 5) Continue the processes ("g")
 :: This way all processes are resumed at the same time and all child processes are debugged.
-"%EdgeDbg%" "%URL%" "%WinDbg%" -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g" %2 %3 %4 %5 %6 %7 %8 %9
+"%EdgeDbg:"=%" "%URL:"=%" "%WinDbg:"=%" -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g" %2 %3 %4 %5 %6 %7 %8 %9
