@@ -34,7 +34,7 @@ Example
 -------
 Start Microsoft Edge and open "http://example.com":
 
-    H:\dev\C\EdgeDbg>Build\EdgeDbg_x86.exe http://example.com
+    H:\dev\C\EdgeDbg>EdgeDbg_x86.exe http://example.com
     * Terminating any running instances of Microsoft Edge...
     * Activating Microsoft Edge and opening http://example.com...
     + MicrosoftEdge.exe process id = 2744
@@ -52,8 +52,18 @@ This script demonstrates how to start Microsoft Edge and attach a debugger
 launching Microsoft Edge to prevent it from reloading tabs that were open the
 last time you ran it.
 
+Syntax:
+    EdgeWinDbg.cmd [url to open] [additional arguments passed to windbg]
+
+This script requires windbg.exe from Microsoft's Debugging Tools for Windows,
+and the environment variable `WinDbg` should be set to the path of the
+`windbg.exe` binary before running the script. If this environment variable is
+not defined, the script attempts to locate windbg.exe automatically.
+
+Example:
     H:\dev\C\EdgeDbg>Set WinDbg=path\to\windbg.exe
-    H:\dev\C\EdgeDbg>EdgeWinDbg
+    
+    H:\dev\C\EdgeDbg>EdgeWinDbg.cmd
     * Terminating any running Edge processes...
     * Deleting crash recovery data...
     * Starting Edge in WinDbg...
@@ -70,6 +80,67 @@ last time you ran it.
     + browser_broker.exe process id = 1836
     * Suspended process 1836.
     * Starting "path\to\windbg.exe" -o -p 5388 -c ".attach 0n3852;g;.attach 0n1836;g;.attach 0n1476;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g"
+
+EdgeBugId.cmd
+-------------
+This script facilitates use of [BugId](https://github.com/SkyLined/BugId) with
+Microsoft Edge. BugId is a set of python scripts that allow automatic bug
+detection, analysis and identification. For more information on BugId see the
+project's [README](https://github.com/SkyLined/BugId/blob/master/README.md)
+file. The script also clean up the crash recovery data before launching
+Microsoft Edge to prevent it from reloading tabs that were open the last time
+you ran it.
+
+Syntax:
+    EdgeBugId.cmd [url to open] [additioonal arguments passed to BugId]
+
+This script requires BugId, and the environment variable `BugId` should be
+set to the path of the `BugId.py` script before running the script.
+BugId requires cdb.exe from Microsoft's Debugging Tools for Windows, and the
+environment variable `cdb` should be set to the path of the `cdb.exe` binary
+before running the script.
+If either environment variable is not defined, the script attempts to locate
+the required component automatically.
+
+Example:
+    X:\path\to\EdgeDbg>Set cdb=\path\to\cdb.exe
+    
+    X:\path\to\EdgeDbg>Set BugId=\path\to\BugId.py
+    
+    X:\path\to\EdgeDbg>EdgeBugId.cmd
+    * Terminating any running instances of Microsoft Edge...
+    * Deleting crash recovery data...
+    * Starting Edge in BugId...
+    + URL: http://PC:28876/
+    * Terminating any running instances of Microsoft Edge...
+    * Activating Microsoft Edge and opening http://PC:28876/...
+    + MicrosoftEdge.exe process id = 4792
+    * Waiting for MicrosoftEdgeCP.exe process to start...
+    + MicrosoftEdgeCP.exe process id = 3928
+    * Suspended process 4792.
+    * Suspended process 3928.
+    + RuntimeBroker.exe process id = 2104
+    * Suspended process 2104.
+    + browser_broker.exe process id = 2096
+    * Suspended process 2096.
+    * Starting \path\to\python.exe \path\to\BugId.py --pids=2104,2096,4792,3928
+    * The debugger is attaching to the application...
+    * Attached to process 2104.
+    * The application was resumed successfully and is running...
+    * Attached to process 2096.
+    * Attached to process 4792.
+    * Attached to process 3928.
+    * Exception code 0xC0000005 (Access violation) was detected and is being analyzed...
+    * A bug was detected in the application.
+    
+    Id:               E39B AVR:NULL microsoftedgecp.exe!EDGEHTML.dll!CDocument::getElementsByTagNameNSInternal
+    Description:      Access violation while reading memory at 0x0 using a NULL ptr
+    Process binary:   microsoftedgecp.exe
+    Location:         EDGEHTML.dll!CDocument::getElementsByTagNameNSInternal + 0x36
+    Security impact:  None
+    Error report:     E39B AVR.NULL microsoftedgecp.exe!EDGEHTML.dll!CDocument..getElementsByTagNameNSInternal.html (66859 bytes)
+    
+    X:\path\to\EdgeDbg>
 
 Parsing output
 --------------
