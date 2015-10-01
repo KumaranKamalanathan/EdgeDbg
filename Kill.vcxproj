@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4F7C0F1A-776D-4CF4-AE6B-244A225201BC}</ProjectGuid>
+    <ProjectGuid>{56C3063A-1F87-4498-95E2-B0EA633F6731}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>EdgeDbg</RootNamespace>
+    <RootNamespace>Kill</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -75,19 +75,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x64d\</IntDir>
+    <IntDir>$(SolutionDir)\Build\x64d</IntDir>
     <TargetName>$(ProjectName)_x64d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x86\</IntDir>
+    <IntDir>$(SolutionDir)\Build\x86</IntDir>
     <TargetName>$(ProjectName)_x86</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x64\</IntDir>
+    <IntDir>$(SolutionDir)\Build\x64</IntDir>
     <TargetName>$(ProjectName)_x64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,23 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EdgeDbg.cpp" />
+    <ClCompile Include="Kill.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fbCloseHandleAndUpdateResult.h" />
-    <ClInclude Include="fhActivateMicrosoftEdge.h" />
     <ClInclude Include="fhGetProcessIdForExecutableName.h" />
     <ClInclude Include="fhGetSnapshot.h" />
-    <ClInclude Include="fhRunDebugger.h" />
-    <ClInclude Include="fhSuspendThreadsInProcessById.h" />
     <ClInclude Include="fhTerminateAllProcessesForExecutableName.h" />
-    <ClInclude Include="fhTerminateAllRelevantProcesses.h" />
-    <ClInclude Include="fhWaitAndGetProcessIdForExecutableName.h" />
-    <ClInclude Include="fReplaceAll.h" />
-    <ClInclude Include="fuEdgeDbg.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fhShowProcessIdsAndSuspendThreadsForExecutableName.h" />
+    <ClInclude Include="fuKill.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

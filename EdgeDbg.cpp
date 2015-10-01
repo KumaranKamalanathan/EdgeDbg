@@ -1,11 +1,8 @@
-#include <SDKDDKVer.h>
 #include <windows.h>
-#include <stdio.h>
 #include <tchar.h>
 #include <Shobjidl.h>
 #include <tlhelp32.h>
 #include <string>
-
 
 typedef HRESULT(NTAPI *tNtSuspendProcess)(IN HANDLE);
 tNtSuspendProcess _NtSuspendProcess;
@@ -26,6 +23,11 @@ const _TCHAR* sMicrosoftEdgeCPExecutable = _T("MicrosoftEdgeCP.exe");
 #include "fhShowProcessIdsAndSuspendThreadsForExecutableName.h"
 #include "fReplaceAll.h"
 #include "fhRunDebugger.h"
+#include "fhTerminateAllProcessesForExecutableName.h"
 #include "fhTerminateAllRelevantProcesses.h"
 #include "fhActivateMicrosoftEdge.h"
-#include "_tmain.h"
+#include "fuEdgeDbg.h"
+
+UINT _tmain(UINT uArgumentsCount, _TCHAR* asArguments[]) {
+  return fuEdgeDbg(uArgumentsCount, asArguments);
+}

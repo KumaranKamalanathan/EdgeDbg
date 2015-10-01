@@ -1,4 +1,4 @@
-int _tmain(UINT uArgumentsCount, _TCHAR* asArguments[]) {
+UINT fuEdgeDbg(UINT uArgumentsCount, _TCHAR* asArguments[]) {
   HRESULT hResult;
   _IsWow64Process = (tIsWow64Process)GetProcAddress(GetModuleHandle(_T("kernel32")), "IsWow64Process");
   _NtSuspendProcess = (tNtSuspendProcess)GetProcAddress(GetModuleHandle(_T("ntdll")), "NtSuspendProcess");

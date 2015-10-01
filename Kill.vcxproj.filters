@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EdgeDbg.cpp">
+    <ClCompile Include="Kill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,40 +23,17 @@
     <ClInclude Include="fbCloseHandleAndUpdateResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fhActivateMicrosoftEdge.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="fhGetProcessIdForExecutableName.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fhGetSnapshot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fhRunDebugger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fhSuspendThreadsInProcessById.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fhTerminateAllRelevantProcesses.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fhWaitAndGetProcessIdForExecutableName.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fReplaceAll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fuEdgeDbg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fhTerminateAllProcessesForExecutableName.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fhShowProcessIdsAndSuspendThreadsForExecutableName.h">
+    <ClInclude Include="fhGetSnapshot.h">
       <Filter>Header Files</Filter>
-    </None>
+    </ClInclude>
+    <ClInclude Include="fuKill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
