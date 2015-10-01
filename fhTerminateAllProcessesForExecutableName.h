@@ -11,8 +11,11 @@ HRESULT fhTerminateAllProcessesForExecutableName(const _TCHAR* sExecutableName) 
         _tprintf(_T("- Cannot open process %d (error %08X).\r\n"), dwProcessId, GetLastError());
         return HRESULT_FROM_WIN32(GetLastError());
       }
-      if (!TerminateProcess(hProcess, 0) && WaitForSingleObject(hProcess, 0) == WAIT_TIMEOUT) {
+      if (!TerminateProcess(hProcess, 0)) {
         _tprintf(_T("- Cannot terminate process %d (error %08X).\r\n"), dwProcessId, GetLastError());
+        hResult = HRESULT_FROM_WIN32(GetLastError());
+      } else if (WaitForSingleObject(hProcess, 0) == WAIT_TIMEOUT) {
+        _tprintf(_T("- Cannot wait for termination of process %d (error %08X).\r\n"), dwProcessId, GetLastError());
         hResult = HRESULT_FROM_WIN32(GetLastError());
       } else {
         _tprintf(_T("* Terminated %s process %d.\r\n"), sExecutableName, dwProcessId);
