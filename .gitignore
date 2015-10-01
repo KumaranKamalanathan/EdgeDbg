@@ -44,7 +44,7 @@ Temporary Items
 
 # Project specific files and folders:
 cCrashInfo/Debugging Tools For Windows (*)/
-Temp/
+Build/
 *.pyc
 *.suo
 \#*.cmd
