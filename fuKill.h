@@ -20,7 +20,6 @@ UINT fuKill(UINT uArgumentsCount, _TCHAR* asArguments[]) {
     hResult = E_INVALIDARG;
   } else  {
     for (UINT uArgumentIndex = 1; uArgumentIndex < uArgumentsCount; uArgumentIndex++) {
-      __debugbreak();
       _tprintf(_T("* Killing %s\r\n"), asArguments[uArgumentIndex]);
       hResult = fhTerminateAllProcessesForExecutableName(asArguments[uArgumentIndex]);
       if (!SUCCEEDED(hResult)) break;
