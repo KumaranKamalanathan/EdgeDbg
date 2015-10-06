@@ -81,6 +81,24 @@ Example:
     * Suspended process 1836.
     * Starting "path\to\windbg.exe" -o -p 5388 -c ".attach 0n3852;g;.attach 0n1836;g;.attach 0n1476;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g"
 
+EdgePageHeap.cmd
+----------------
+You may want to enable page heap for Microsoft Edge to make detection and
+analysis of bugs more reliable and detailed. This can be done using the
+gflags.exe application that is distributed with Microsoft's Debugging Tools for
+Windows. The preferred flags to use are +02109870, see the page heap
+documentation for an explanation of the switches in use. The command-line
+utility EdgePageHeap.cmd is provided to facilitate enabling/disabling page heap
+for all processes associated with Microsoft Edge. It can be used in the
+following way:
+
+    EdgePageHeap.cmd [ON|OFF]
+
+This will enable (ON, default) or disable (OFF) page heap. Note that enabling
+page heap is highly recommended when using BugId to detect crashes (more on
+that below).
+
+
 EdgeBugId.cmd
 -------------
 This script facilitates use of [BugId](https://github.com/SkyLined/BugId) with
