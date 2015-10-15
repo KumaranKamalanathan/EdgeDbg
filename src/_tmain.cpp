@@ -15,15 +15,16 @@ const _TCHAR* sBrowserBrokerExecutable = _T("browser_broker.exe");
 const _TCHAR* sRuntimeBrokerExecutable = _T("RuntimeBroker.exe");
 const _TCHAR* sMicrosoftEdgeCPExecutable = _T("MicrosoftEdgeCP.exe");
 
-#include "fhGetSnapshot.h"
-#include "fbCloseHandleAndUpdateResult.h"
-#include "fhGetProcessIdForExecutableName.h"
+#include "Kill\src\fhGetSnapshot.h"
+#include "Kill\src\fbCloseHandleAndUpdateResult.h"
+#include "Kill\src\fhGetProcessIdForExecutableName.h"
 #include "fhWaitAndGetProcessIdForExecutableName.h"
 #include "fhSuspendThreadsInProcessById.h"
 #include "fhShowProcessIdsAndSuspendThreadsForExecutableName.h"
 #include "fReplaceAll.h"
 #include "fhRunDebugger.h"
-#include "fhTerminateAllProcessesForExecutableName.h"
+#include "Kill\src\fhTerminateProcessForId.h"
+#include "Kill\src\fhTerminateAllProcessesForExecutableName.h"
 #include "fhTerminateAllRelevantProcesses.h"
 #include "fhActivateMicrosoftEdge.h"
 #include "fuEdgeDbg.h"

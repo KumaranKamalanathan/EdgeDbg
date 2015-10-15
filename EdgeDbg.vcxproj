@@ -68,26 +68,26 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x86d\</IntDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)tmp\build_x86d\</IntDir>
     <TargetName>$(ProjectName)_x86d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x64d\</IntDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)tmp\build_x64d\</IntDir>
     <TargetName>$(ProjectName)_x64d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x86\</IntDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)tmp\build_x86\</IntDir>
     <TargetName>$(ProjectName)_x86</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\x64\</IntDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)tmp\build_x64\</IntDir>
     <TargetName>$(ProjectName)_x64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -163,20 +163,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EdgeDbg.cpp" />
+    <ClCompile Include="src\_tmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fbCloseHandleAndUpdateResult.h" />
-    <ClInclude Include="fhActivateMicrosoftEdge.h" />
-    <ClInclude Include="fhGetProcessIdForExecutableName.h" />
-    <ClInclude Include="fhGetSnapshot.h" />
-    <ClInclude Include="fhRunDebugger.h" />
-    <ClInclude Include="fhSuspendThreadsInProcessById.h" />
-    <ClInclude Include="fhTerminateAllProcessesForExecutableName.h" />
-    <ClInclude Include="fhTerminateAllRelevantProcesses.h" />
-    <ClInclude Include="fhWaitAndGetProcessIdForExecutableName.h" />
-    <ClInclude Include="fReplaceAll.h" />
-    <ClInclude Include="fuEdgeDbg.h" />
+    <ClInclude Include="src\fhActivateMicrosoftEdge.h" />
+    <ClInclude Include="src\fhRunDebugger.h" />
+    <ClInclude Include="src\fhSuspendThreadsInProcessById.h" />
+    <ClInclude Include="src\fhWaitAndGetProcessIdForExecutableName.h" />
+    <ClInclude Include="src\fReplaceAll.h" />
+    <ClInclude Include="src\fuEdgeDbg.h" />
+    <ClInclude Include="src\Kill\src\fbCloseHandleAndUpdateResult.h" />
+    <ClInclude Include="src\Kill\src\fhGetProcessIdForExecutableName.h" />
+    <ClInclude Include="src\Kill\src\fhGetSnapshot.h" />
+    <ClInclude Include="src\Kill\src\fhTerminateAllProcessesForExecutableName.h" />
+    <ClInclude Include="src\Kill\src\fhTerminateAllRelevantProcesses.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fhShowProcessIdsAndSuspendThreadsForExecutableName.h" />

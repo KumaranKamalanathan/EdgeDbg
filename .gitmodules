@@ -1,0 +1,3 @@
+[submodule "src/Kill"]
+	path = src/Kill
+	url = https://github.com/SkyLined/Kill/
