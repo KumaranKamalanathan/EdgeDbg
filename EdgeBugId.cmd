@@ -28,9 +28,9 @@ IF NOT EXIST "%EdgeDbg%" (
 
 IF NOT "%Kill:~0,0%" == "" (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET Kill=%~dp0src\Kill\bin\Kill_x64.exe
+    SET Kill=%~dp0modules\Kill\bin\Kill_x64.exe
   ) ELSE (
-    SET Kill=%~dp0src\Kill\bin\Kill_x86.exe
+    SET Kill=%~dp0modules\Kill\bin\Kill_x86.exe
   )
 )
 SET Kill=%Kill:"=%

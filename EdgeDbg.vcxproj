@@ -172,11 +172,11 @@
     <ClInclude Include="src\fhWaitAndGetProcessIdForExecutableName.h" />
     <ClInclude Include="src\fReplaceAll.h" />
     <ClInclude Include="src\fuEdgeDbg.h" />
-    <ClInclude Include="src\Kill\src\fbCloseHandleAndUpdateResult.h" />
-    <ClInclude Include="src\Kill\src\fhGetProcessIdForExecutableName.h" />
-    <ClInclude Include="src\Kill\src\fhGetSnapshot.h" />
-    <ClInclude Include="src\Kill\src\fhTerminateAllProcessesForExecutableName.h" />
-    <ClInclude Include="src\Kill\src\fhTerminateAllRelevantProcesses.h" />
+    <ClInclude Include="modules\Kill\src\fbCloseHandleAndUpdateResult.h" />
+    <ClInclude Include="modules\Kill\src\fhGetProcessIdForExecutableName.h" />
+    <ClInclude Include="modules\Kill\src\fhGetSnapshot.h" />
+    <ClInclude Include="modules\Kill\src\fhTerminateAllProcessesForExecutableName.h" />
+    <ClInclude Include="modules\Kill\src\fhTerminateAllRelevantProcesses.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fhShowProcessIdsAndSuspendThreadsForExecutableName.h" />
