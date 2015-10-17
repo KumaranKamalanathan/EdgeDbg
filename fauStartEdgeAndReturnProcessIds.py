@@ -22,7 +22,7 @@ def fauStartEdgeAndReturnProcessIds(sURL = None, bDeleteRecoveryData = True):
     asErrors = [];
     for sLine in sStdOut.split("\n"):
       oProcessIdOrErrorMatch = re.match(r"^(?:%s)\r?$" % "|".join([
-        r"\+ (.*) process id = (\d+)",
+        r"\+ (?:.*) process id = (\d+)",
         r"\- (.*)",
       ]), sLine);
       if oProcessIdOrErrorMatch:
