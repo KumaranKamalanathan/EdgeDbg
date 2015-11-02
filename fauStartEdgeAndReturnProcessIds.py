@@ -21,9 +21,9 @@ def fauStartEdgeAndReturnProcessIds(sURL = None, bDeleteRecoveryData = True):
     auProcessIds = [];
     asErrors = [];
     for sLine in sStdOut.split("\n"):
-      oProcessIdOrErrorMatch = re.match(r"^(?:%s)\r?$" % "|".join([
-        r"\+ (?:.*) process id = (\d+)",
-        r"\- (.*)",
+      oProcessIdOrErrorMatch = re.match(r"^(?:%s)\r*$" % "|".join([
+        r"\+ (?:.+) process id = (\d+)",
+        r"\- (.+)",
       ]), sLine);
       if oProcessIdOrErrorMatch:
         sProcessId, sError = oProcessIdOrErrorMatch.groups();
@@ -32,6 +32,8 @@ def fauStartEdgeAndReturnProcessIds(sURL = None, bDeleteRecoveryData = True):
         else:
           auProcessIds.append(long(sProcessId));
     if len(asErrors) == 0:
+      assert len(auProcessIds) > 0, \
+          "Could not detect process id's in EdgeDbg output:\r\n%s" % sStdOut;
       return auProcessIds;
     time.sleep(1);
   raise AssertionError("Error starting Edge:\r\n%s" % sStdOut);
