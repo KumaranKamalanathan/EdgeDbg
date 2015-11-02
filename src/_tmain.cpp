@@ -23,6 +23,7 @@ const _TCHAR* sMicrosoftEdgeCPExecutable = _T("MicrosoftEdgeCP.exe");
 #include "fhShowProcessIdsAndSuspendThreadsForExecutableName.h"
 #include "fReplaceAll.h"
 #include "fhRunDebugger.h"
+#include "Kill\src\fhProcessExistsForId.h"
 #include "Kill\src\fhTerminateProcessForId.h"
 #include "Kill\src\fhTerminateAllProcessesForExecutableName.h"
 #include "fhTerminateAllRelevantProcesses.h"
