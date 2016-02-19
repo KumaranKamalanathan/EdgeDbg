@@ -112,7 +112,8 @@ Microsoft Edge to prevent it from reloading tabs that were open the last time
 you ran it.
 
 Syntax:
-    EdgeBugId.cmd [url to open] [additioonal arguments passed to BugId]
+
+    EdgeBugId.cmd <url> <additional BugId arguments>
 
 This script requires BugId, and the environment variable `BugId` should be
 set to the path of the `BugId.py` script before running the script.
@@ -123,6 +124,7 @@ If either environment variable is not defined, the script attempts to locate
 the required component automatically.
 
 Example:
+
     X:\path\to\EdgeDbg>Set cdb=\path\to\cdb.exe
     
     X:\path\to\EdgeDbg>Set BugId=\path\to\BugId.py
