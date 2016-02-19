@@ -53,7 +53,8 @@ launching Microsoft Edge to prevent it from reloading tabs that were open the
 last time you ran it.
 
 Syntax:
-    EdgeWinDbg.cmd [url to open] [additional arguments passed to windbg]
+
+    EdgeWinDbg.cmd <url> <additional windbg arguments>
 
 This script requires windbg.exe from Microsoft's Debugging Tools for Windows,
 and the environment variable `WinDbg` should be set to the path of the
@@ -61,6 +62,7 @@ and the environment variable `WinDbg` should be set to the path of the
 not defined, the script attempts to locate windbg.exe automatically.
 
 Example:
+
     H:\dev\C\EdgeDbg>Set WinDbg=path\to\windbg.exe
     
     H:\dev\C\EdgeDbg>EdgeWinDbg.cmd
