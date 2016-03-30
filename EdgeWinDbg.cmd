@@ -70,3 +70,4 @@ IF EXIST "%LOCALAPPDATA%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\Micro
 :: This way all processes are resumed at the same time and all child processes are debugged.
 ECHO * Starting Edge in WinDbg...
 ECHO + URL: %URL%
+"%EdgeDbg%" "%URL%" "%WinDbg%" -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;.attach 0n@ApplicationFrameHost@;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;|3s;~*m;.childdbg 1;g" %WinDbgArguments%
