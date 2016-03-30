@@ -1,6 +1,7 @@
 HRESULT fhRunDebugger(
     DWORD dwMicrosoftEdgeProcessId, DWORD dwBrowserBrokerProcessId, DWORD dwRuntimeBrokerProcessId,
-    DWORD dwMicrosoftEdgeCPProcessId, UINT uCommandLineCount, _TCHAR* asCommandLine[]
+    DWORD dwMicrosoftEdgeCPProcessId, DWORD dwApplicationFrameHostProcessId, UINT uCommandLineCount,
+    _TCHAR* asCommandLine[]
 ) {
   std::basic_string<TCHAR> sCommandLine = _T("");
   #ifdef UNICODE
@@ -8,14 +9,17 @@ HRESULT fhRunDebugger(
     std::basic_string<TCHAR> sBrowserBrokerProcessId = std::to_wstring(dwBrowserBrokerProcessId);
     std::basic_string<TCHAR> sRuntimeBrokerProcessId = std::to_wstring(dwRuntimeBrokerProcessId);
     std::basic_string<TCHAR> sMicrosoftEdgeCPProcessId = std::to_wstring(dwMicrosoftEdgeCPProcessId);
+    std::basic_string<TCHAR> sApplicationFrameHostProcessId = std::to_wstring(dwApplicationFrameHostProcessId);
   #else
     std::basic_string<TCHAR> sMicrosoftEdgeProcessId = std::to_string(dwMicrosoftEdgeProcessId);
     std::basic_string<TCHAR> sBrowserBrokerProcessId = std::to_string(dwBrowserBrokerProcessId);
     std::basic_string<TCHAR> sRuntimeBrokerProcessId = std::to_string(dwRuntimeBrokerProcessId);
     std::basic_string<TCHAR> sMicrosoftEdgeCPProcessId = std::to_string(dwMicrosoftEdgeCPProcessId);
+    std::basic_string<TCHAR> sApplicationFrameHostProcessId = std::to_string(dwApplicationFrameHostProcessId);
   #endif
   std::basic_string<TCHAR> sAllProcessIds = sRuntimeBrokerProcessId + _T(",") + sBrowserBrokerProcessId +  _T(",") +
-                                            sMicrosoftEdgeProcessId + _T(",") + sMicrosoftEdgeCPProcessId;
+                                            sMicrosoftEdgeProcessId + _T(",") + sMicrosoftEdgeCPProcessId +  _T(",") +
+                                            sApplicationFrameHostProcessId;
   for (UINT uIndex = 0; uIndex < uCommandLineCount; uIndex++) {
     if (uIndex > 0) sCommandLine += _T(" ");
     std::basic_string<TCHAR> sArgument = asCommandLine[uIndex];
@@ -23,6 +27,7 @@ HRESULT fhRunDebugger(
     fReplaceAll(sArgument, _T("@browser_broker@"), sBrowserBrokerProcessId);
     fReplaceAll(sArgument, _T("@RuntimeBroker@"), sRuntimeBrokerProcessId);
     fReplaceAll(sArgument, _T("@MicrosoftEdgeCP@"), sMicrosoftEdgeCPProcessId);
+    fReplaceAll(sArgument, _T("@ApplicationFrameHost@"), sApplicationFrameHostProcessId);
     fReplaceAll(sArgument, _T("@ProcessIds@"), sAllProcessIds);
     if (sArgument.find(_T(" ")) != std::basic_string<TCHAR>::npos) { // If the argument contains spaces, quotes are needed
       fReplaceAll(sArgument, _T("\\"), _T("\\\\")); // escape all existing escapes.

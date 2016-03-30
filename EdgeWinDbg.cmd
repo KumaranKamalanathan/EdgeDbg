@@ -48,7 +48,7 @@ IF "%~1" == "" (
 )
 
 ECHO * Terminating all running processes associated with Edge...
-"%Kill%" MicrosoftEdge.exe browser_broker.exe RuntimeBroker.exe MicrosoftEdgeCP.exe
+"%Kill%" MicrosoftEdge.exe browser_broker.exe RuntimeBroker.exe MicrosoftEdgeCP.exe ApplicationFrameHost.exe
 IF ERRORLEVEL 1 (
   ECHO - Cannot terminate all running processes associated with Edge.
   EXIT /B 1
@@ -70,4 +70,3 @@ IF EXIST "%LOCALAPPDATA%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\Micro
 :: This way all processes are resumed at the same time and all child processes are debugged.
 ECHO * Starting Edge in WinDbg...
 ECHO + URL: %URL%
-"%EdgeDbg%" "%URL%" "%WinDbg%" -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g" %WinDbgArguments%

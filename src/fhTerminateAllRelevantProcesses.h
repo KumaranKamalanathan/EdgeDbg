@@ -7,5 +7,7 @@ HRESULT fhTerminateAllRelevantProcesses() {
   hResult = fhTerminateAllProcessesForExecutableName(sRuntimeBrokerExecutable);
   if (!SUCCEEDED(hResult)) return hResult;
   hResult = fhTerminateAllProcessesForExecutableName(sMicrosoftEdgeCPExecutable);
+  if (!SUCCEEDED(hResult)) return hResult;
+  hResult = fhTerminateAllProcessesForExecutableName(sApplicationFrameHostExecutable);
   return hResult;
 }

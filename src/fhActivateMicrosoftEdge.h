@@ -51,10 +51,24 @@ HRESULT fhActivateMicrosoftEdge(IApplicationActivationManager* pAAM, _TCHAR* sUR
     hResult = fhSuspendThreadsInProcessById(dwBrowserBrokerProcessId);
     if (!SUCCEEDED(hResult)) return hResult;
   }
+  // Get and suspend the application frame host process
+  DWORD dwApplicationFrameHostProcessId;
+  hResult = fhGetProcessIdForExecutableName(sApplicationFrameHostExecutable, dwApplicationFrameHostProcessId, bProcessFound);
+  if (!SUCCEEDED(hResult)) return hResult;
+  if (!bProcessFound) {
+    _tprintf(_T("- %s process not found.\r\n"), sApplicationFrameHostExecutable);
+    return HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER); // similar to cdb behavior
+  }
+  _tprintf(_T("+ %s process id = %d\r\n"), sApplicationFrameHostExecutable, dwApplicationFrameHostProcessId);
+  if (bSuspendThreads) {
+    hResult = fhSuspendThreadsInProcessById(dwApplicationFrameHostProcessId);
+    if (!SUCCEEDED(hResult)) return hResult;
+  }
+  // Run the debugger
   if (uDebuggerCommandLineComponentsCount > 0) {
     hResult = fhRunDebugger(
       dwMicrosoftEdgeProcessId, dwBrowserBrokerProcessId, dwRuntimeBrokerProcessId, dwMicrosoftEdgeCPProcessId, 
-      uDebuggerCommandLineComponentsCount, asDebuggerCommandLine
+      dwApplicationFrameHostProcessId, uDebuggerCommandLineComponentsCount, asDebuggerCommandLine
     );
   }
   return hResult;

@@ -20,15 +20,16 @@ associated processes.
     EdgeDbg.exe <url> path\to\debugger.exe [debugger arguments]
 
 Note: You can use `@MicrosoftEdge@`, `@MicrosoftEdgeCP@`, `@browser_broker@`,
-and `@RuntimeBroker@` in the debugger arguments; they will be replaced by the
-decimal process id of these processes. You can also use `@ProcessIds@`, which
-will be replaced by the process ids of all four of these processes, separated
-by commas.
+, `@RuntimeBroker@`, and `@ApplicationFrameHost@` in the debugger arguments;
+these will be replaced by the decimal process id of these processes. You can
+also use `@ProcessIds@`, which will be replaced by the process ids of all four
+of these processes, separated by commas.
 
-EdgeDbg will terminate any running instances of Microsoft Edge prior to starting
-the application. This means terminating all accessible processes that have loaded
-the `MicrosoftEdge.exe`, `MicrosoftEdgeCP.exe`, `browser_broker.exe`, or
-`RuntimeBroker.exe` executables.
+EdgeDbg will terminate any running instances of Microsoft Edge prior to
+starting the application. This means terminating all accessible processes that
+have loaded the `MicrosoftEdge.exe`, `MicrosoftEdgeCP.exe`,
+`browser_broker.exe`, `RuntimeBroker.exe`, or `ApplicationFrameHost.exe`
+executables.
 
 Example
 -------
@@ -42,6 +43,7 @@ Start Microsoft Edge and open "http://example.com":
     + MicrosoftEdgeCP.exe process id = 2748
     + RuntimeBroker.exe process id = 2936
     + browser_broker.exe process id = 3088
+    + ApplicationFrameHost.exe process id = 1234
     
     H:\dev\C\EdgeDbg>
 
@@ -79,7 +81,9 @@ Example:
     * Suspended process 1476.
     + browser_broker.exe process id = 1836
     * Suspended process 1836.
-    * Starting "path\to\windbg.exe" -o -p 5388 -c ".attach 0n3852;g;.attach 0n1836;g;.attach 0n1476;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;g"
+    + ApplicationFrameHost.exe process id = 1234
+    * Suspended process 1234.
+    * Starting "path\to\windbg.exe" -o -p 5388 -c ".attach 0n3852;g;.attach 0n1836;g;.attach 0n1476;g;.attach 0n1234;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;|3s;~*m;.childdbg 1;g"
 
 EdgePageHeap.cmd
 ----------------
@@ -110,7 +114,7 @@ Microsoft Edge to prevent it from reloading tabs that were open the last time
 you ran it.
 
 Syntax:
-    EdgeBugId.cmd [url to open] [additioonal arguments passed to BugId]
+    EdgeBugId.cmd [url to open] [additional arguments passed to BugId]
 
 This script requires BugId, and the environment variable `BugId` should be
 set to the path of the `BugId.py` script before running the script.
@@ -141,13 +145,16 @@ Example:
     * Suspended process 2104.
     + browser_broker.exe process id = 2096
     * Suspended process 2096.
-    * Starting \path\to\python.exe \path\to\BugId.py --pids=2104,2096,4792,3928
+    + ApplicationFrameHost.exe process id = 1234
+    * Suspended process 1234.
+    * Starting \path\to\python.exe \path\to\BugId.py --pids=2104,2096,4792,3928,1234
     * The debugger is attaching to the application...
     * Attached to process 2104.
     * The application was resumed successfully and is running...
     * Attached to process 2096.
     * Attached to process 4792.
     * Attached to process 3928.
+    * Attached to process 1234.
     * Exception code 0xC0000005 (Access violation) was detected and is being analyzed...
     * A bug was detected in the application.
     

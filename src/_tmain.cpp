@@ -14,6 +14,7 @@ const _TCHAR* sMicrosoftEdgeExecutable = _T("MicrosoftEdge.exe");
 const _TCHAR* sBrowserBrokerExecutable = _T("browser_broker.exe");
 const _TCHAR* sRuntimeBrokerExecutable = _T("RuntimeBroker.exe");
 const _TCHAR* sMicrosoftEdgeCPExecutable = _T("MicrosoftEdgeCP.exe");
+const _TCHAR* sApplicationFrameHostExecutable = _T("ApplicationFrameHost.exe");
 
 #include "Kill\src\fhGetSnapshot.h"
 #include "Kill\src\fbCloseHandleAndUpdateResult.h"

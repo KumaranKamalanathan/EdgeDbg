@@ -31,6 +31,8 @@ IF "%~1" == "OFF" (
   ECHO   * RuntimeBroker.exe
   "%GFlags%" -i RuntimeBroker.exe -FFFFFFFF >nul
   IF ERRORLEVEL 1 GOTO :ERROR
+  "%GFlags%" -i ApplicationFrameHost.exe -FFFFFFFF >nul
+  IF ERRORLEVEL 1 GOTO :ERROR
 ) ELSE (
   ECHO * Enabling page heap for Microsoft Edge processes...
   ECHO   * MicrosoftEdge.exe
@@ -52,6 +54,11 @@ IF "%~1" == "OFF" (
   "%GFlags%" -i RuntimeBroker.exe -FFFFFFFF >nul
   IF ERRORLEVEL 1 GOTO :ERROR
   "%GFlags%" -i RuntimeBroker.exe +02109870 >nul
+  IF ERRORLEVEL 1 GOTO :ERROR
+  ECHO   * ApplicationFrameHost.exe
+  "%GFlags%" -i ApplicationFrameHost.exe -FFFFFFFF >nul
+  IF ERRORLEVEL 1 GOTO :ERROR
+  "%GFlags%" -i ApplicationFrameHost.exe +02109870 >nul
   IF ERRORLEVEL 1 GOTO :ERROR
 )
 EXIT /B 0
