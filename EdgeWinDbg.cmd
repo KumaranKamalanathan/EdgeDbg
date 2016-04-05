@@ -2,9 +2,16 @@
 SETLOCAL
 IF NOT "%WinDbg:~0,0%" == "" (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET WinDbg=C:\Program Files\Windows Kits\8.1\Debuggers\x64\windbg.exe
+    SET WinDbg=C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64\windbg.exe
   ) ELSE (
     SET WinDbg=C:\Program Files\Windows Kits\8.1\Debuggers\x86\windbg.exe
+  )
+  IF NOT EXIST "%WinDbg%" (
+    IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+      SET WinDbg=C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\windbg.exe
+    ) ELSE (
+      SET WinDbg=C:\Program Files\Windows Kits\10\Debuggers\x86\windbg.exe
+    )
   )
 )
 SET WinDbg=%WinDbg:"=%
@@ -70,4 +77,4 @@ IF EXIST "%LOCALAPPDATA%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\Micro
 :: This way all processes are resumed at the same time and all child processes are debugged.
 ECHO * Starting Edge in WinDbg...
 ECHO + URL: %URL%
-"%EdgeDbg%" "%URL%" "%WinDbg%" -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;g;.attach 0n@browser_broker@;g;.attach 0n@RuntimeBroker@;g;.attach 0n@ApplicationFrameHost@;g;~*m;.childdbg 1;|0s;~*m;.childdbg 1;|1s;~*m;.childdbg 1;|2s;~*m;.childdbg 1;|3s;~*m;.childdbg 1;g" %WinDbgArguments%
+"%EdgeDbg%" "%URL%" "%WinDbg%" -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;.attach 0n@browser_broker@;.attach 0n@RuntimeBroker@;.attach 0n@ApplicationFrameHost@;$<%~dpn0.script" %WinDbgArguments%
