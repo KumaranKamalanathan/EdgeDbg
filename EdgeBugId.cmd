@@ -2,9 +2,16 @@
 SETLOCAL
 IF NOT "%cdb:~0,0%" == "" (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET cdb=C:\Program Files\Windows Kits\8.1\Debuggers\x64\cdb.exe
+    SET cdb=C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64\cdb.exe
   ) ELSE (
     SET cdb=C:\Program Files\Windows Kits\8.1\Debuggers\x86\cdb.exe
+  )
+  IF NOT EXIST "%cdb%" (
+    IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+      SET cdb=C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe
+    ) ELSE (
+      SET cdb=C:\Program Files\Windows Kits\10\Debuggers\x86\cdb.exe
+    )
   )
 )
 SET cdb=%cdb:"=%
