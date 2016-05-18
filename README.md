@@ -201,6 +201,12 @@ builds.
 
 License
 -------
+This project was originally forked from [Microsoft Edge Launcher]
+(https://github.com/MicrosoftEdge/MicrosoftEdgeLauncher) but the program has
+been completely rewritten and expanded. It is therefore no longer a (modified)
+copy of that code and the MIT licence that covers Microsoft Edge Launcher no
+longer applies to this code.
+
 This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0
 International License](http://creativecommons.org/licenses/by-nc/4.0/).
 
