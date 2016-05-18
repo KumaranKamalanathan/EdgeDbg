@@ -198,3 +198,11 @@ you for some reason.
 Please note that the 64-bit executable will (obviously) not run on 32-bit
 windows builds, and that the 32-bit executable will not work on 64-bit windows
 builds.
+
+License
+-------
+This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0
+International License](http://creativecommons.org/licenses/by-nc/4.0/).
+
+![Creative Commons License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png
+"Creative Commons License")
