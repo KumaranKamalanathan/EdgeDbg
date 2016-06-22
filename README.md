@@ -199,6 +199,16 @@ Please note that the 64-bit executable will (obviously) not run on 32-bit
 windows builds, and that the 32-bit executable will not work on 64-bit windows
 builds.
 
+Donations
+---------
+This work is provided free of charge for non-commercial use. If you find it
+useful and would like to make a donation, you can send bitcoin to 
+[183yyxa9s1s1f7JBpPHPmzQ346y91Rx5DX]. If you would like to use it commercially,
+please contact the author at [berendjanwever@gmail.com][] to discuss licensing
+options.
+[183yyxa9s1s1f7JBpPHPmzQ346y91Rx5DX]:bitcoin:183yyxa9s1s1f7JBpPHPmzQ346y91Rx5DX
+[berendjanwever@gmail.com]:mailto:berendjanwever@gmail.com
+
 License
 -------
 This project was originally forked from [Microsoft Edge Launcher]
