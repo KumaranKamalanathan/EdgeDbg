@@ -1,6 +1,6 @@
 @ECHO OFF
 SETLOCAL
-IF NOT "%cdb:~0,0%" == "" (
+IF NOT DEFINED cdb (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET cdb=C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64\cdb.exe
   ) ELSE (
@@ -20,7 +20,7 @@ IF NOT EXIST "%cdb%" (
   EXIT /B 1
 )
 
-IF NOT "%EdgeDbg:~0,0%" == "" (
+IF NOT DEFINED EdgeDbg (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET EdgeDbg=%~dp0bin\EdgeDbg_x64.exe
   ) ELSE (
@@ -33,7 +33,7 @@ IF NOT EXIST "%EdgeDbg%" (
   EXIT /B 1
 )
 
-IF NOT "%Kill:~0,0%" == "" (
+IF NOT DEFINED Kill (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET Kill=%~dp0modules\Kill\bin\Kill_x64.exe
   ) ELSE (
@@ -46,7 +46,7 @@ IF NOT EXIST "%Kill%" (
   EXIT /B 1
 )
 
-IF NOT "%BugId:~0,0%" == "" (
+IF NOT DEFINED BugId (
   SET BugId=%~dp0..\BugId\BugId.py
 )
 SET BugId=%BugId:"=%
@@ -55,8 +55,8 @@ IF NOT EXIST "%BugId%" (
   EXIT /B 1
 )
 
-IF NOT "%PYTHON:~0,0%" == "" (
-  SET PYTHON=C:\Python27\python.exe
+IF NOT DEFINED PYTHON (
+  SET PYTHON=%SystemDrive%:\Python27\python.exe
 )
 SET PYTHON=%PYTHON:"=%
 IF NOT EXIST "%PYTHON%" (

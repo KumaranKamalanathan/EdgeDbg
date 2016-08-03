@@ -5,7 +5,7 @@ IF ERRORLEVEL 1 (
   ECHO - Must be run as administrator.
   EXIT /B 1
 )
-IF NOT "%GFlags:~0,0%" == "" (
+IF NOT DEFINED GFlags (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET GFlags=C:\Program Files\Windows Kits\8.1\Debuggers\x64\gflags.exe
   ) ELSE (

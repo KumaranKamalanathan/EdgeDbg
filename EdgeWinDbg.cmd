@@ -1,6 +1,6 @@
 @ECHO OFF
 SETLOCAL
-IF NOT "%WinDbg:~0,0%" == "" (
+IF NOT DEFINED WinDbg (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET WinDbg=C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64\windbg.exe
   ) ELSE (
@@ -20,7 +20,7 @@ IF NOT EXIST "%WinDbg%" (
   EXIT /B 1
 )
 
-IF NOT "%EdgeDbg:~0,0%" == "" (
+IF NOT DEFINED EdgeDbg (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET EdgeDbg=%~dp0bin\EdgeDbg_x64.exe
   ) ELSE (
@@ -33,7 +33,7 @@ IF NOT EXIST "%EdgeDbg%" (
   EXIT /B 1
 )
 
-IF NOT "%Kill:~0,0%" == "" (
+IF NOT DEFINED Kill (
   IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
     SET Kill=%~dp0modules\Kill\bin\Kill_x64.exe
   ) ELSE (
