@@ -51,7 +51,7 @@ IF "%~1" == "" (
 )
 
 ECHO * Terminating all running processes associated with Edge...
-%Kill% MicrosoftEdge.exe browser_broker.exe RuntimeBroker.exe MicrosoftEdgeCP.exe ApplicationFrameHost.exe
+%Kill% ApplicationFrameHost.exe browser_broker.exe MicrosoftEdge.exe MicrosoftEdgeCP.exe RuntimeBroker.exe
 IF ERRORLEVEL 1 (
   ECHO - Cannot terminate all running processes associated with Edge.
   EXIT /B 1
