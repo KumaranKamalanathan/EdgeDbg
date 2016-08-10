@@ -28,15 +28,15 @@ IF "%~1" == "OFF" (
   ECHO     %~nx0 [ON^OFF]
   EXIT /B 1
 )
+CALL :SWITCH_GFLAGS "ApplicationFrameHost.exe" "%~1"
+IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
+CALL :SWITCH_GFLAGS "browser_broker.exe" "%~1"
+IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 CALL :SWITCH_GFLAGS "MicrosoftEdge.exe" "%~1"
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 CALL :SWITCH_GFLAGS "MicrosoftEdgeCP.exe" "%~1"
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
-CALL :SWITCH_GFLAGS "browser_broker.exe" "%~1"
-IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 CALL :SWITCH_GFLAGS "RuntimeBroker.exe" "%~1"
-IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
-CALL :SWITCH_GFLAGS "ApplicationFrameHost.exe" "%~1"
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 EXIT /B 0
 
@@ -68,7 +68,7 @@ EXIT /B 0
   %GFlags% -i %1 -FFFFFFFF >nul
   IF ERRORLEVEL 1 GOTO :ERROR
   IF "%~2" == "OFF" EXIT /B 0
-  %GFlags% -i MicrosoftEdge.exe +02109870 >nul
+  %GFlags% -i %1 +02109870 >nul
   IF ERRORLEVEL 1 GOTO :ERROR
   EXIT /B 0
 
