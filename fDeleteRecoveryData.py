@@ -1,11 +1,14 @@
 import os;
+# The CWD may not be this script's folder; make sure it looks there for modules first:
+sBaseFolderPath = os.path.dirname(__file__);
+for sPath in [sBaseFolderPath] + [os.path.join(sBaseFolderPath, x) for x in ["modules"]]:
+  if sPath not in sys.path:
+    sys.path.insert(0, sPath);
 
-gsRecoveryPath = os.path.join(os.getenv("LocalAppData"), "Packages", "Microsoft.MicrosoftEdge_8wekyb3d8bbwe", 
+from FileSystem import FileSystem;
+
+sRecoveryPath = FileSystem.fsPath(os.getenv("LocalAppData"), "Packages", "Microsoft.MicrosoftEdge_8wekyb3d8bbwe", 
     "AC", "MicrosoftEdge", "User", "Default", "Recovery", "Active");
 
 def fDeleteRecoveryData():
-  if not os.path.isdir(gsRecoveryPath):
-    return;
-  for sFileName in os.listdir(gsRecoveryPath):
-    sFilePath = os.path.join(gsRecoveryPath, sFileName);
-    os.remove(sFilePath);
+  FileSystem.fbDeleteChildrenFromFolder(sRecoveryPath);

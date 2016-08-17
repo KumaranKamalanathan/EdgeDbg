@@ -1,4 +1,11 @@
 import os, re, subprocess, time;
+# The CWD may not be this script's folder; make sure it looks there for modules first:
+sBaseFolderPath = os.path.dirname(__file__);
+for sPath in [sBaseFolderPath] + [os.path.join(sBaseFolderPath, x) for x in ["modules"]]:
+  if sPath not in sys.path:
+    sys.path.insert(0, sPath);
+
+from FileSystem import FileSystem;
 from dxEdgeDbgConfig import dxEdgeDbgConfig;
 from fDeleteRecoveryData import fDeleteRecoveryData;
 sOSISA = {"AMD64": "x64", "x86": "x86"}[os.getenv("PROCESSOR_ARCHITEW6432") or os.getenv("PROCESSOR_ARCHITECTURE")];
@@ -9,7 +16,7 @@ def fauStartEdgeAndReturnProcessIds(sURL = None, bDeleteRecoveryData = True):
     if bDeleteRecoveryData:
       fDeleteRecoveryData();
     sEdgDbgBinaryPath = dxEdgeDbgConfig["sEdgeDbgBinaryPath_%s" % sOSISA];
-    assert sEdgDbgBinaryPath and os.path.isfile(sEdgDbgBinaryPath), \
+    assert sEdgDbgBinaryPath and FileSystem.fbIsFile(sEdgDbgBinaryPath), \
         "No %s EdgDbg binary found at %s" % (sOSISA, sEdgDbgBinaryPath);
     asEdgeDbgCommand = [sEdgDbgBinaryPath] + (sURL is not None and [sURL] or []) + ["--suspend"];
     oEdgeDbgProcess = subprocess.Popen(asEdgeDbgCommand, stdout = subprocess.PIPE, stderr = subprocess.PIPE);
