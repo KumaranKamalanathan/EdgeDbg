@@ -1,4 +1,4 @@
-import os;
+import os, sys;
 # The CWD may not be this script's folder; make sure it looks there for modules first:
 sBaseFolderPath = os.path.dirname(__file__);
 for sPath in [sBaseFolderPath] + [os.path.join(sBaseFolderPath, x) for x in ["modules"]]:
