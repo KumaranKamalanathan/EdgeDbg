@@ -1,7 +1,22 @@
 @ECHO OFF
 SETLOCAL
+IF "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
+  SET OSISA=x64
+) ELSE IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+  SET OSISA=x64
+) ELSE (
+  SET OSISA=x86
+)
+
 IF NOT DEFINED WinDbg (
-  CALL :SET_WINDBG_%PROCESSOR_ARCHITECTURE%
+  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\%OSISA%\WinDbg.exe"
+  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\%OSISA%\WinDbg.exe"
+  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\%OSISA%\WinDbg.exe"
+  IF EXIST "%ProgramFiles(x86)%" (
+    CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\%OSISA%\WinDbg.exe"
+    CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\%OSISA%\WinDbg.exe"
+    CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\%OSISA%\WinDbg.exe"
+  )
   IF NOT DEFINED WinDbg (
       ECHO - Cannot find WinDbg.exe, please set the "WinDbg" environment variable to the correct path.
       EXIT /B 1
@@ -15,11 +30,7 @@ IF NOT EXIST %WinDbg% (
 )
 
 IF NOT DEFINED EdgeDbg (
-  IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET EdgeDbg="%~dp0bin\EdgeDbg_x64.exe"
-  ) ELSE (
-    SET EdgeDbg="%~dp0bin\EdgeDbg_x86.exe"
-  )
+  SET EdgeDbg="%~dp0bin\EdgeDbg_%OSISA%.exe"
 ) ELSE (
   SET EdgeDbg="%EdgeDbg:"=%"
 )
@@ -29,11 +40,7 @@ IF NOT EXIST %EdgeDbg% (
 )
 
 IF NOT DEFINED Kill (
-  IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET Kill="%~dp0modules\Kill\bin\Kill_x64.exe"
-  ) ELSE (
-    SET Kill="%~dp0modules\Kill\bin\Kill_x86.exe"
-  )
+  SET Kill="%~dp0modules\Kill\bin\Kill_%%OSISA%%.exe"
 ) ELSE (
   SET Kill="%Kill:"=%"
 )
@@ -75,21 +82,6 @@ ECHO * Starting Edge in WinDbg...
 ECHO + URL: %URL%
 %EdgeDbg% %URL% %WinDbg% -o -p @MicrosoftEdge@ -c ".attach 0n@MicrosoftEdgeCP@;.attach 0n@browser_broker@;.attach 0n@RuntimeBroker@;.attach 0n@ApplicationFrameHost@;$<%~dpn0.script" %WinDbgArguments%
 EXIT /B %ERRORLEVEL%
-
-:SET_WINDBG_AMD64
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\x64\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\x64\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\x64\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\x64\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\x64\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\x64\WinDbg.exe"
-  EXIT /B 0
-
-:SET_WINDBG_x86
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\x86\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\x86\WinDbg.exe"
-  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\x86\WinDbg.exe"
-  EXIT /B 0
 
 :SET_WINDBG_IF_EXISTS
   IF NOT DEFINED WinDbg (

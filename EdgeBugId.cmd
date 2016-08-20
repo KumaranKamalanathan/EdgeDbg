@@ -1,10 +1,25 @@
 @ECHO OFF
 SETLOCAL
+IF "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
+  SET OSISA=x64
+) ELSE IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+  SET OSISA=x64
+) ELSE (
+  SET OSISA=x86
+)
+
 IF NOT DEFINED cdb (
-  CALL :SET_CDB_%PROCESSOR_ARCHITECTURE%
+  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\%OSISA%\cdb.exe"
+  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\%OSISA%\cdb.exe"
+  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\%OSISA%\cdb.exe"
+  IF EXIST "%ProgramFiles(x86)%" (
+    CALL :SET_CDB_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\%OSISA%\cdb.exe"
+    CALL :SET_CDB_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\%OSISA%\cdb.exe"
+    CALL :SET_CDB_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\%OSISA%\cdb.exe"
+  )
   IF NOT DEFINED cdb (
-      ECHO - Cannot find cdb.exe, please set the "cdb" environment variable to the correct path.
-      EXIT /B 1
+    ECHO - Cannot find cdb.exe, please set the "cdb" environment variable to the correct path.
+    EXIT /B 1
   )
 ) ELSE (
   :: Make sure cdb is quoted
@@ -16,11 +31,7 @@ IF NOT EXIST %cdb% (
 )
 
 IF NOT DEFINED EdgeDbg (
-  IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET EdgeDbg="%~dp0bin\EdgeDbg_x64.exe"
-  ) ELSE (
-    SET EdgeDbg="%~dp0bin\EdgeDbg_x86.exe"
-  )
+  SET EdgeDbg="%~dp0bin\EdgeDbg_%OSISA%.exe"
 ) ELSE (
   SET EdgeDbg="%EdgeDbg:"=%"
 )
@@ -30,11 +41,7 @@ IF NOT EXIST %EdgeDbg% (
 )
 
 IF NOT DEFINED Kill (
-  IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
-    SET Kill="%~dp0modules\Kill\bin\Kill_x64.exe"
-  ) ELSE (
-    SET Kill="%~dp0modules\Kill\bin\Kill_x86.exe"
-  )
+  SET Kill="%~dp0modules\Kill\bin\Kill_%OSISA%.exe"
 ) ELSE (
   SET Kill="%Kill:"=%"
 )
@@ -87,21 +94,6 @@ ECHO * Starting Edge in BugId...
 ECHO + URL: %URL%
 %EdgeDbg% %URL% %PYTHON% %BugId% @edge --pids=@ProcessIds@ %BugIdArguments%
 EXIT /B %ERRORLEVEL%
-
-:SET_CDB_AMD64
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\x64\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\x64\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\x64\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\x64\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\x64\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\x64\cdb.exe"
-  EXIT /B 0
-
-:SET_CDB_x86
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\x86\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\x86\cdb.exe"
-  CALL :SET_CDB_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\x86\cdb.exe"
-  EXIT /B 0
 
 :SET_CDB_IF_EXISTS
   IF NOT DEFINED cdb (

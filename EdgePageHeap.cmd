@@ -5,8 +5,22 @@ IF ERRORLEVEL 1 (
   ECHO - Must be run as administrator.
   EXIT /B 1
 )
+IF "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
+  SET OSISA=x64
+) ELSE IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+  SET OSISA=x64
+) ELSE (
+  SET OSISA=x86
+)
 IF NOT DEFINED GFlags (
-  CALL :SET_GFLAGS_%PROCESSOR_ARCHITECTURE%
+  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\%OSISA%\gflags.exe"
+  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\%OSISA%\gflags.exe"
+  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\%OSISA%\gflags.exe"
+  IF EXIST "%ProgramFiles(x86)%" (
+    CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\%OSISA%\gflags.exe"
+    CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\%OSISA%\gflags.exe"
+    CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\%OSISA%\gflags.exe"
+  )
   IF NOT DEFINED GFlags (
     ECHO - Cannot find gflags.exe, please set the "GFlags" environment variable to the correct path.
     EXIT /B 1
@@ -39,21 +53,6 @@ IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 CALL :SWITCH_GFLAGS "RuntimeBroker.exe" "%~1"
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 EXIT /B 0
-
-:SET_GFLAGS_AMD64
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\x64\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\x64\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\x64\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\x64\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\x64\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\x64\gflags.exe"
-  EXIT /B 0
-
-:SET_GFLAGS_x86
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\x86\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\x86\gflags.exe"
-  CALL :SET_GFLAGS_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\x86\gflags.exe"
-  EXIT /B 0
 
 :SET_GFLAGS_IF_EXISTS
   IF NOT DEFINED GFlags (
