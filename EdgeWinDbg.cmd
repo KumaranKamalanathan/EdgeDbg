@@ -40,7 +40,7 @@ IF NOT EXIST %EdgeDbg% (
 )
 
 IF NOT DEFINED Kill (
-  SET Kill="%~dp0modules\Kill\bin\Kill_%%OSISA%%.exe"
+  SET Kill="%~dp0modules\Kill\bin\Kill_%OSISA%.exe"
 ) ELSE (
   SET Kill="%Kill:"=%"
 )
