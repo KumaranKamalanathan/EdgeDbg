@@ -1,7 +1,7 @@
 2016-09-12
 ==========
-+ Change BugId application keyword from `@edge` to `edge` as the `@` is no
-  longer needed or wanted.
++ Change BugId application keyword from `@edge` to `edge` and move it after the
+  "--pids" argument to comply with newer BugId versions.
 
 2016-09-08
 ==========
