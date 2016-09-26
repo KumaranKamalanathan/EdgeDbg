@@ -1,3 +1,8 @@
+2016-09-26
+==========
++ Rename `EdgePageHeap.cmd` to `PageHeap-Edge.cmd` as similar scripts in the
+  BugId project follow that naming pattern.
+
 2016-09-12
 ==========
 + Change BugId application keyword from `@edge` to `edge` and move it after the
