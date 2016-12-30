@@ -1,6 +1,10 @@
 HRESULT fhRunDebugger(
-    DWORD dwMicrosoftEdgeProcessId, DWORD dwBrowserBrokerProcessId, DWORD dwRuntimeBrokerProcessId,
-    DWORD dwMicrosoftEdgeCPProcessId, DWORD dwApplicationFrameHostProcessId, UINT uCommandLineCount,
+    DWORD dwMicrosoftEdgeProcessId,
+    DWORD dwBrowserBrokerProcessId,
+    DWORD dwRuntimeBrokerProcessId,
+    DWORD dwMicrosoftEdgeCPProcessId,
+    DWORD dwApplicationFrameHostProcessId,
+    UINT uCommandLineCount,
     _TCHAR* asCommandLine[]
 ) {
   std::basic_string<TCHAR> sCommandLine = _T("");
@@ -18,7 +22,8 @@ HRESULT fhRunDebugger(
     std::basic_string<TCHAR> sApplicationFrameHostProcessId = std::to_string(dwApplicationFrameHostProcessId);
   #endif
   std::basic_string<TCHAR> sAllProcessIds = sRuntimeBrokerProcessId + _T(",") + sBrowserBrokerProcessId +  _T(",") +
-                                            sMicrosoftEdgeProcessId + _T(",") + sMicrosoftEdgeCPProcessId +  _T(",") +
+                                            sMicrosoftEdgeProcessId + _T(",") +
+                                            (dwMicrosoftEdgeCPProcessId ? sMicrosoftEdgeCPProcessId +  _T(",") : _T("")) +
                                             sApplicationFrameHostProcessId;
   for (UINT uIndex = 0; uIndex < uCommandLineCount; uIndex++) {
     if (uIndex > 0) sCommandLine += _T(" ");
