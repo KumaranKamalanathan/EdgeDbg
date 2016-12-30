@@ -6,6 +6,6 @@ VOID fReplaceAll(std::basic_string<TCHAR> &sHayStack, std::basic_string<TCHAR> s
       break;
     }
     sHayStack.replace(uIndex, sNeedle.length(), sReplacement);
-    uIndex += sNeedle.length(); 
+    uIndex += sReplacement.length(); 
   }
 }
