@@ -178,7 +178,6 @@
     <ClInclude Include="src\fhActivateMicrosoftEdge.h" />
     <ClInclude Include="src\fhRunDebugger.h" />
     <ClInclude Include="src\fhSuspendThreadsInProcessById.h" />
-    <ClInclude Include="src\fhWaitAndGetProcessIdForExecutableName.h" />
     <ClInclude Include="src\fReplaceAll.h" />
     <ClInclude Include="src\fuEdgeDbg.h" />
     <ClInclude Include="modules\Kill\src\fbCloseHandleAndUpdateResult.h" />
@@ -186,9 +185,6 @@
     <ClInclude Include="modules\Kill\src\fhGetSnapshot.h" />
     <ClInclude Include="modules\Kill\src\fhTerminateAllProcessesForExecutableName.h" />
     <ClInclude Include="modules\Kill\src\fhTerminateAllRelevantProcesses.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fhShowProcessIdsAndSuspendThreadsForExecutableName.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
