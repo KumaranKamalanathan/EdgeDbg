@@ -92,7 +92,7 @@ IF EXIST "%LOCALAPPDATA%\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\AC\Micro
 
 ECHO * Starting Edge in BugId...
 ECHO + URL: %URL%
-%EdgeDbg% %URL% %PYTHON% %BugId% --pids=@ProcessIds@ %BugIdArguments% edge
+%EdgeDbg% %URL% %PYTHON% %BugId% --pids=@ProcessIds@ %BugIdArguments% edgedbg
 EXIT /B %ERRORLEVEL%
 
 :SET_CDB_IF_EXISTS
