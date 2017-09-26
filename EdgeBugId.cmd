@@ -1,5 +1,22 @@
 @ECHO OFF
 SETLOCAL
+FOR /F "usebackq delims=[.] tokens=2,3,4" %%I in (`ver`) DO (
+  IF NOT "%%I.%%J" == "Version 10.0" (
+    ECHO This application is designed to run on Windows 10.0, but you appear to be
+    ECHO running %%I.%%J. EdgeBugId will try to start Edge in BugId, but there
+    ECHO is no guarantee this is going to work.
+  ) ELSE IF /I "%%K" LSS "15063" (
+    ECHO === DEPRECATION WARNING =======================================================
+    ECHO Starting with Windows 10.0.15063 ^(Creators Edition^), Edge has become a full
+    ECHO Universal Windows Platform ^(UWP^) App and BugId can be used to run Edge
+    ECHO directly without the need for EdgeBugId. In fact, EdgeBugId should no longer
+    ECHO be used to run Edge as it will NOT debug all the sandboxed child processes
+    ECHO that you are probably most interested in!
+    ECHO ===============================================================================
+    PAUSE
+  )
+)
+
 IF "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
   SET OSISA=x64
 ) ELSE IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (

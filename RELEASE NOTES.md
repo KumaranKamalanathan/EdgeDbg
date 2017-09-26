@@ -1,3 +1,23 @@
+2017-09-26
+==========
+Deprecation
+-----------
+Starting with Windows 10.0.15063 (Creators Edition), Edge has become a full
+Universal Windows Platform (UWP) App. This means that the main Edge process no
+longer spawns any of the sandboxed child processes directly, but that all
+processes are spawned by the UWP framework. As a result, EdgeDbg can no longer
+be used to debug all Edge processes using BugId or WinDbg.
++ If you want to continue to debug Edge using BugId, you can simply use BugId
+  directly: recent versions are able to debug USP Apps, and edge is a known,
+  pre-configured applications in BugId.
++ If you want to continue to debug Edge using WinDbg, you are encouraged to
+  look at the Microsoft website that explains how you can do this. It is
+  unfortunately a bit more involved than using EdgeWinDbg, and I may in the
+  future revive EdgeDbg in order to automate most of the process of starting
+  Edge in WinDbg. For now, I have no immediate need for that myself, so I can
+  offer no guarantees when and if it will ever be implemented.
+  https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/debugging-a-uwp-app-using-windbg
+
 2016-12-30
 ==========
 + Attempt to reduce chances of hitting a race condition: When Edge is started,
