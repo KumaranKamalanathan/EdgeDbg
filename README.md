@@ -13,6 +13,64 @@ no longer be used, however:
 
     `powershell windbg -plmPackage (Get-AppxPackage Microsoft.MicrosoftEdge).PackageFullName -plmApp MicrosoftEdge [<URL>]`
   
+  A more comprehensive solution is to create a file called `EdgeWinDbg.cmd`
+  with the following contents:
+```
+@ECHO OFF
+SETLOCAL
+FOR /F "usebackq" %%I in (`POWERSHELL ^(Get-AppxPackage Microsoft.MicrosoftEdge^).PackageFamilyName`) DO SET PackageFamilyName=%%I
+FOR /F "usebackq" %%I in (`POWERSHELL ^(Get-AppxPackage Microsoft.MicrosoftEdge^).PackageFullName`) DO SET PackageFullName=%%I
+
+IF "%PROCESSOR_ARCHITEW6432%" == "AMD64" (
+  SET OSISA=x64
+) ELSE IF "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+  SET OSISA=x64
+) ELSE (
+  SET OSISA=x86
+)
+
+IF NOT DEFINED WinDbg (
+  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\10\Debuggers\%OSISA%\WinDbg.exe"
+  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.1\Debuggers\%OSISA%\WinDbg.exe"
+  CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles%\Windows Kits\8.0\Debuggers\%OSISA%\WinDbg.exe"
+  IF EXIST "%ProgramFiles(x86)%" (
+    CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\10\Debuggers\%OSISA%\WinDbg.exe"
+    CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.1\Debuggers\%OSISA%\WinDbg.exe"
+    CALL :SET_WINDBG_IF_EXISTS "%ProgramFiles(x86)%\Windows Kits\8.0\Debuggers\%OSISA%\WinDbg.exe"
+  )
+  IF NOT DEFINED WinDbg (
+      ECHO - Cannot find WinDbg.exe, please set the "WinDbg" environment variable to the correct path.
+      EXIT /B 1
+  )
+) ELSE (
+  SET WinDbg="%WinDbg:"=%"
+)
+IF NOT EXIST %WinDbg% (
+  ECHO - Cannot find WinDbg.exe at %WinDbg%, please set the "WinDbg" environment variable to the correct path.
+  EXIT /B 1
+)
+
+
+IF EXIST "%LocalAppData%\Packages\%PackageFamilyName%\AC\MicrosoftEdge\User\Default\Recovery\Active" (
+  RD /s /q "%LocalAppData%\Packages\%PackageFamilyName%\AC\MicrosoftEdge\User\Default\Recovery\Active"
+)
+
+IF "%~1" == "" (
+  SET URL="http://%COMPUTERNAME%:28876/"
+) ELSE (
+  SET URL="%~1"
+)
+%WinDbg% -plmPackage "%PackageFullName%" -plmApp MicrosoftEdge %URL%
+
+:SET_WINDBG_IF_EXISTS
+  IF NOT DEFINED WinDbg (
+    IF EXIST "%~1" (
+      SET WinDbg="%~1"
+    )
+  )
+  EXIT /B 0
+```
+  
 --------------------------------
 
 A simple command line exe to start and debug the Microsoft Edge browser.
